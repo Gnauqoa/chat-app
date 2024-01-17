@@ -3,5 +3,5 @@ export default {
   white: '#fff',
   black : '#000000',
   note: '#797C7B',
-  
+  gray: '#797C7B',
 }

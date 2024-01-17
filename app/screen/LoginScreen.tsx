@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity,StyleSheet, Image, Alert, Keyboard } from 'react-native';
 import color from './../../container/color'
+import { router } from 'expo-router';
 
 interface LoginProps {
   // Add any props if needed
@@ -9,17 +10,36 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = (props) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPwd] = useState<string>("");
-
+  const [checkBox, setCheckBox] = useState(false);
+  const [checkEmail,setCheckEmail] = useState(true);
+  const [checkPwd, setCheckPwd] = useState(true);
   const handleLogIn = (email: string, password: string) => {
+    let regexEmail = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+
     if (email.length === 0) {
       Alert.alert("Error", "You have not entered your email yet. Please fill it in");
       return false;
     }
+
+    if (!regexEmail.test(email)) {
+      // Alert.alert("Error", "Please enter an email address");
+      setCheckEmail(false);
+      return false;
+    }
+    else {setCheckEmail(true)}
+
     if (password.length === 0) {
       Alert.alert("Error", "You have not entered your email yet. Please fill it in");
       return false;
     }
+
+    if (password != '123') {
+      setCheckPwd(false);
+      return false;
+    }
+    else {setCheckPwd(true);}
     Alert.alert("Success", "Login successfully");
+    router.push("/screen/HomeScreen")
     setPwd("");
     Keyboard.dismiss();
   }
@@ -45,6 +65,9 @@ const Login: React.FC<LoginProps> = (props) => {
               onChangeText={(email) => setEmail(email)}
               style={styles.input}
             />
+            <View style={{alignItems:'flex-end'}}>
+            <Text style={styles.errorText}>{!checkEmail ? 'Invalid email address' : ''}</Text>
+            </View>
           </View>
         </View>
 
@@ -57,7 +80,11 @@ const Login: React.FC<LoginProps> = (props) => {
               value={password}
               onChangeText={(password) => setPwd(password)}
               style={styles.input}
+              secureTextEntry={true}
             />
+            <View style={{alignItems:'flex-end'}}>
+              <Text style={styles.errorText}>{!checkPwd ? 'Invalid password' : ''}</Text>
+            </View>
           </View>
         </View>
 
@@ -113,13 +140,18 @@ const styles =StyleSheet.create({
   },
   
   inputContainer: {
-    marginTop: 20
+    marginTop: 10
   },
 
   text: {
     fontSize: 14,
     fontWeight: '500',
     color: color.heading,
+  },
+
+  errorText: {
+    color: 'red',
+    marginTop: 4
   },
 
   input: {
@@ -146,7 +178,7 @@ const styles =StyleSheet.create({
   },
 
   textBtn: {
-    fontSize: 16,
+    fontSize: 18,
     color: color.white,
     fontWeight: 'bold',
   },
