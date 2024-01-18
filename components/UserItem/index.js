@@ -16,9 +16,13 @@ const UserItem = (props) => {
                 <Text style={styles.userHeading}>Axyaabc</Text>
                 <Text style={styles.userInfo}>MSSV | role</Text>
             </View>
+            
         </View>
+
+
     </TouchableOpacity>
   )
 }
 
 export default UserItem
+

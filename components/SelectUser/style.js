@@ -9,20 +9,26 @@ const styles = StyleSheet.create({
         marginRight: 14
     },
 
-    userContainer: {
-        // backgroundColor: 'red',
+    itemContainer: {
         flexDirection: 'row',
-        
         alignItems: 'center',
         paddingHorizontal: 30,
         paddingVertical: 10,
         borderBottomWidth: 0.4,
         borderBottomColor: color.note,
-        
+        justifyContent: 'space-between'
     },
 
+    userContainer: {
+        // backgroundColor: 'red',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+
+
     userInfoContainer: {
-        
+
     },
 
     userHeading: {
@@ -40,13 +46,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 20,
         borderColor: color.note,
-        backgroundColor: color.heading,
-        width: 20,
-        height: 20,
+        backgroundColor: color.white,
+        width: 28,
+        height: 28,
         alignItems: 'center',
         justifyContent: 'center',
     },
 
+    inner: {
+        width: 12,
+        height: 12,
+        resizeMode: 'stretch',
+    }
 })
 
 export default styles;

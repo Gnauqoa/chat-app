@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
 
   timeContainer: {
-      alignItems: 'flex-end'
+      alignItems: 'flex-end',
   },
 
   txtTime: {

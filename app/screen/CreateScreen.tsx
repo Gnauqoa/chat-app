@@ -21,21 +21,15 @@ const CreateScreen = () => {
                 </View>
             </View>
             <View style={styles.bodyContainer}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => {router.push('/screen/CreateGroup')}}>
                     <View style={styles.itemContainer}>
-                        <Text style={styles.heading}>Tạo nhóm mới</Text>
+                        <Text style={styles.heading}>Tạo cuộc hội thoại mới</Text>
                         <Image source={require('../../assets/images/nextIcon.png')} style={styles.nextIcon} resizeMode='stretch' />
                     </View> 
                 </TouchableOpacity>
 
-                <TouchableOpacity>
-                    <View style={styles.itemContainer}>
-                        <Text style={styles.heading}>Kết bạn mới</Text>
-                        <Image source={require('../../assets/images/nextIcon.png')} style={styles.nextIcon} resizeMode='stretch' />
-                    </View>
-                </TouchableOpacity>
                 <Text style={styles.headingSmall}>Gợi ý</Text>
-                <ScrollView>
+                <ScrollView style={styles.listItems}>
                     <UserItem/>
                     <UserItem/>
                     <UserItem/>
@@ -135,6 +129,9 @@ const styles =StyleSheet.create({
         marginBottom: 10
     },
     
+    listItems: {
+        marginBottom: 20,
+    }
   })
 
 export default CreateScreen
