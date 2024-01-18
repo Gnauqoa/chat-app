@@ -2,8 +2,9 @@ import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,Sty
 import React from 'react'
 import color from '../../container/color'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
-
+import { router } from 'expo-router';
 import MessageItem from '../../components/MessageItem'
+
 
 const HomeScreen = () => {
   return (
@@ -16,7 +17,9 @@ const HomeScreen = () => {
                         <Image source={require('../../assets/images/find.png')} style={styles.iconSmall} />
                         <TextInput style={styles.input}/>
                     </View>
-                    <Image source={require('../../assets/images/create.png')} style={styles.iconLarge} />
+                    <TouchableOpacity onPress={() => router.push("/screen/CreateScreen")}>
+                       <Image source={require('../../assets/images/create.png')} style={styles.iconLarge} />
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.bodyContainer}>
                     <ScrollView>
