@@ -4,4 +4,6 @@ export default {
   black : '#000000',
   note: '#797C7B',
   gray: '#F0F2F5',
+  gradient1: '#272C4E',
+  gradient2: '#F04A4C',
 }

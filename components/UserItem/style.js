@@ -36,16 +36,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
 
-    outer: {
-        borderWidth: 1,
-        borderRadius: 20,
-        borderColor: color.note,
-        backgroundColor: color.heading,
-        width: 20,
-        height: 20,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+
 
 })
 

@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 
 import styles from './style'
+import { router } from 'expo-router';
 
 const MessageItem = (props) => {
   const {number} = props;
@@ -9,7 +10,7 @@ const MessageItem = (props) => {
   const itemBg = number%2===0 ? styles.even : styles.odd;
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => router.push('/screen/ChatBox')}>
       <View style={styles.item}>
           <View style={styles.userContainer}>
               <Image source={require('../../assets/images/Avatar.png')} style={styles.avatar} />
