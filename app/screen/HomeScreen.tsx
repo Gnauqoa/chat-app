@@ -33,8 +33,33 @@ const HomeScreen = () => {
                         <MessageItem/>
                         <MessageItem/>
                         <MessageItem/>
+                        <MessageItem/>
+                        <MessageItem/>
+                        <MessageItem/>
                     </ScrollView>
+                
 
+                </View>
+                
+
+                <View style={styles.TabBar}>
+                    <TouchableOpacity style={styles.tabContainer}>
+                        
+                            <Image style={styles.iconTab} source={require('../../assets/images/messageIconOn.png')} />
+                            <Text style={[styles.txtTab,styles.textOn]}>
+                                Tin nhắn
+                            </Text>
+                        
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => router.push('/screen/ProfileScreen')} style={styles.tabContainer}>
+                        
+                            <Image style={styles.iconTab} source={require('../../assets/images/profileOff.png')} />
+                            <Text style={[styles.txtTab,styles.textOff]}>
+                                    Cá nhân
+                            </Text>
+                        
+                    </TouchableOpacity>
 
                 </View>
             </View>
@@ -90,15 +115,46 @@ const styles =StyleSheet.create({
 
     bodyContainer: {
         backgroundColor: color.white,
-        width: '100%',
-        height: '100%',
+        flex: 1,
         borderTopLeftRadius: 50,
         borderTopRightRadius: 50,
         // paddingHorizontal: 20,
-        paddingVertical: 40,
+        paddingTop: 40,
     },
 
+    TabBar: {
+        width: 'auto',
+        flexDirection: 'row',
+        backgroundColor: color.white,
+        bottom: 0,
+    },
 
+    tabContainer: {
+        flex: 1,
+        // backgroundColor: 'red',
+        paddingVertical: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    iconTab: {
+        width: 30,
+        height: 30,
+    },
+
+    txtTab: {
+        fontSize: 16,
+    },
+
+    textOn: {
+        fontWeight: 'bold',
+        color: color.heading,
+    },
+
+    textOff: {
+        fontWeight: '500',
+        color: color.note,
+    },
   })
 
 export default HomeScreen
