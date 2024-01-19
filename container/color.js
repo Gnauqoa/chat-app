@@ -6,4 +6,5 @@ export default {
   gray: '#F0F2F5',
   gradient1: '#272C4E',
   gradient2: '#F04A4C',
+  underline: '#C6C6C6',
 }

@@ -1,25 +1,18 @@
 import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
 import { router } from 'expo-router';
 import color from '../../container/color'
 import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react'
+import { TextInput } from 'react-native-gesture-handler';
 
-
-const ProfileScreen = () => {
-    const [gmail,setGmail] = useState('21521479@gmail.com');
-    const [maSV,setmaSV] = useState('21521479');
-    const [major,setMajor] = useState('Khoa học máy tính');
-    const [nameClass,setNameClass] = useState('KHCL2021.1');
-    const [birth,setBirth] = useState('03/07/2003');
-
-    
+const EditProfileScreen = () => {
   return (
     <ImageBackground style={{height: '100%', width: '100%'}} source={require('../../assets/images/Home.png')} resizeMode='stretch'>
         <StatusBar backgroundColor={'black'} barStyle={'light-content'}/>
         <SafeAreaView style={{flex: 1}}>
             <View style={styles.container}>
-                <TouchableOpacity onPress={() => router.push('/screen/LoginScreen')}>
-                    <Image style={styles.logoutBtn} source={require('../../assets/images/logoutBtn.png')} />
+                <TouchableOpacity onPress={() => router.push('/screen/ProfileScreen')}>
+                    <Image style={styles.backBtn} source={require('../../assets/images/backBtnWhite.png')} />
                 </TouchableOpacity>
                 <Text style={styles.heading}>
                     Thông tin cá nhân
@@ -41,75 +34,58 @@ const ProfileScreen = () => {
 
                         </View>
 
-                        <TouchableOpacity onPress={() => router.push('/screen/EditProfileScreen')}>
+                        <View>
+                            <View style={styles.infoContainer}>
+                                <Text style={styles.title}>Gmail</Text>
+                                <TextInput underlineColorAndroid={color.underline} style={styles.content}>21521479@gm.uit.edu.vn</TextInput>
+                            </View>
+                            <View style={styles.infoContainer}>
+                                <Text style={styles.title}>Mã số sinh viên</Text>
+                                <TextInput underlineColorAndroid={color.underline} style={styles.content}>21521479</TextInput>
+                            </View>
+                            <View style={styles.infoContainer}>
+                                <Text style={styles.title}>Khoa</Text>
+                                <TextInput underlineColorAndroid={color.underline} style={styles.content}>Khoa học Máy tính</TextInput>
+                            </View>
+                            <View style={styles.infoContainer}>
+                                <Text style={styles.title}>Lớp</Text>
+                                <TextInput underlineColorAndroid={color.underline} style={styles.content}>KHCL2021.1</TextInput>
+                            </View>
+                            <View style={styles.infoContainer}>
+                                <Text style={styles.title}>Ngày sinh</Text>
+                                <TextInput underlineColorAndroid={color.underline} style={styles.content}>03/07/2003</TextInput>
+                            </View>
+                        </View>
+
+                        <TouchableOpacity  onPress={() => router.push('/screen/ProfileScreen')}>
                             <LinearGradient 
                                 colors={[color.gradient1,color.gradient2]}
                                 start={{x:0.5, y:0.5}}
                                 style={styles.wrapBtn}
                             >
                                 <Text style={styles.editBtn}>
-                                    Edit Your Profile
+                                    Update
                                 </Text>
                             </LinearGradient>
                         </TouchableOpacity>
-
-                        <View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Gmail</Text>
-                                <Text style={styles.content}>{gmail}</Text>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Mã số sinh viên</Text>
-                                <Text style={styles.content}>{maSV}</Text>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Khoa</Text>
-                                <Text style={styles.content}>{major}</Text>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Lớp</Text>
-                                <Text style={styles.content}>{nameClass}</Text>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Ngày sinh</Text>
-                                <Text style={styles.content}>{birth}</Text>
-                            </View>
-                        </View>
                     </View>
 
 
                 </View>
-                <View style={styles.TabBar}>
-                    <TouchableOpacity onPress={() => router.push('/screen/HomeScreen')} style={styles.tabContainer}>
-                            
-                            <Image style={styles.iconTab} source={require('../../assets/images/messageOff.png')} />
-                            <Text style={[styles.txtTab,styles.textOff]}>
-                                Tin nhắn
-                            </Text>
-                        
-                    </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.tabContainer}>
-                        
-                            <Image style={styles.iconTab} source={require('../../assets/images/profileOn.png')} />
-                            <Text style={[styles.txtTab,styles.textOn]}>
-                                    Cá nhân
-                            </Text>
-                        
-                    </TouchableOpacity>
-                </View>
             </View>
         </SafeAreaView>
     </ImageBackground>
   )
 }
 
-export default ProfileScreen
+export default EditProfileScreen
 
 const styles =StyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
+        
     },
 
     body: {
@@ -180,7 +156,7 @@ const styles =StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
         // backgroundColor: 'red',
-        marginBottom: 20,
+        marginBottom: 4,
     },
 
     avatar: {
@@ -206,9 +182,10 @@ const styles =StyleSheet.create({
 
     wrapBtn: {
         alignSelf: 'center',
-        paddingHorizontal: 18,
+        paddingHorizontal: 50,
         paddingVertical: 8,
         borderRadius: 30,
+        marginTop: 20,
     },
     
     editBtn: {
@@ -232,14 +209,15 @@ const styles =StyleSheet.create({
     
     content: {
         fontSize: 14,
+        paddingBottom: 6,
     },
     
-    logoutBtn: {
+    backBtn: {
         position: 'absolute',
         width: 40,
         height: 40,
-        alignSelf: 'flex-end',
-        right: 14,
+        alignSelf: 'flex-start',
+        left: 14,
         top: 14,
     }
 })
