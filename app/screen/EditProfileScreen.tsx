@@ -46,7 +46,6 @@ const EditProfileScreen = () => {
                                         <Text style={styles.title}>Ngày sinh</Text>
                                         <TextInput underlineColorAndroid={color.underline} style={styles.content}>03/07/2003</TextInput>
                                     </View>
-
                                 </View>
                             </ScrollView>
                         </View>

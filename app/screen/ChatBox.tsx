@@ -1,6 +1,6 @@
 import { Alert, View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Stack, router } from 'expo-router';
 import color from '../../container/color'
 import Row from '../../components/Row';
@@ -11,12 +11,18 @@ import Message from '../../components/Message'
 import UserReceived from '../../components/UserReceived';
 
 const ChatBox = () => {
+    const scrollViewRef = useRef<ScrollView>(null);
     // const [message,setMessage] = useState('');
     const [messList,setMessList] = useState<string[]>([]);
     const handleSendMessage = (message: string) => { 
         //Add message
-        setMessList([...messList,message])
+        setMessList([...messList,message]);
     }
+
+     // Sử dụng useEffect để cuộn xuống cuối cùng khi messList thay đổi
+    useEffect(() => {
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+    }, [messList]);
 
     const handleShowTime = (index: number) => {
         
@@ -76,7 +82,7 @@ const ChatBox = () => {
                 </View>
             </View>
 
-            <ScrollView>
+            <ScrollView ref={scrollViewRef}>
                 <View style={styles.body}>
                     {/* <View style={styles.userReceive}>
                         <Image style={styles.avatarMess} source={require('../../assets/images/Avatar.png')} />

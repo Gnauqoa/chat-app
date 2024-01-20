@@ -71,45 +71,8 @@ const ProfileScreen = () => {
 
                                     </View>
                                 </ScrollView>
-                            </View>
-                            
+                            </View>      
                         </View>
-                    <View style={styles.avatarContainer}>
-                        {/* <View style={styles.avatarUser}>
-                            <Image style={styles.avatar} source={require('../../assets/images/Avatar.png')} />
-
-                        </View> */}
-
-
-
-                        {/* <ScrollView>
-                            <View style= {styles.wrapInfosContainer}>
-                                <View style={styles.infoContainer}>
-                                    <Text style={styles.title}>Gmail</Text>
-                                    <Text style={styles.content}>{gmail}</Text>
-                                </View>
-                                <View style={styles.infoContainer}>
-                                    <Text style={styles.title}>Mã số sinh viên</Text>
-                                    <Text style={styles.content}>{maSV}</Text>
-                                </View>
-                                <View style={styles.infoContainer}>
-                                    <Text style={styles.title}>Khoa</Text>
-                                    <Text style={styles.content}>{major}</Text>
-                                </View>
-                                <View style={styles.infoContainer}>
-                                    <Text style={styles.title}>Lớp</Text>
-                                    <Text style={styles.content}>{nameClass}</Text>
-                                </View>
-                                <View style={styles.infoContainer}>
-                                    <Text style={styles.title}>Ngày sinh</Text>
-                                    <Text style={styles.content}>{birth}</Text>
-                                </View>
-                            </View>
-                        </ScrollView> */}
-
-                    </View>
-
-
                 </View>
                 <View style={styles.TabBar}>
                     <TouchableOpacity onPress={() => router.push('/screen/HomeScreen')} style={styles.tabContainer}>
@@ -170,15 +133,9 @@ const styles =StyleSheet.create({
     },
 
     boxContainer: {
-        // alignSelf: 'center',
         position: 'absolute',
-        // backgroundColor: color.white,
-        // borderTopLeftRadius: 40,
-        // borderTopRightRadius: 40,
         flex: 1,
         width: '100%'
-        
-        // marginTop: ,
     },
 
     avatarContainer: {
@@ -263,6 +220,7 @@ const styles =StyleSheet.create({
         paddingHorizontal: 18,
         paddingVertical: 8,
         borderRadius: 30,
+        marginBottom: 10,
     },
     
     editBtn: {
