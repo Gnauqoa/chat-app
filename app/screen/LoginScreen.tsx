@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity,StyleSheet, Image, Alert, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import color from './../../container/color'
 import { router } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
 interface LoginProps {
   // Add any props if needed
@@ -49,11 +50,11 @@ const Login: React.FC<LoginProps> = (props) => {
   }
 
   return (
-    
     <KeyboardAvoidingView 
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       keyboardVerticalOffset = {40}
       style={styles.container}>
+      
       <View style={styles.loginContainer}>
         <Image style={styles.logo} source={require('../../assets/images/logoweib.png')} />
         <Text style={styles.title}>

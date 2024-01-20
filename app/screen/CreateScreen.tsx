@@ -9,6 +9,7 @@ import color from '../../container/color'
 const CreateScreen = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
+        <StatusBar translucent backgroundColor={'black'} barStyle={'dark-content'}/>
         <KeyboardAvoidingView 
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             keyboardVerticalOffset = {40}

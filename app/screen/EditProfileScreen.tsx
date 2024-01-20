@@ -9,7 +9,7 @@ const EditProfileScreen = () => {
   return (
     <ImageBackground style={{height: '100%', width: '100%'}} source={require('../../assets/images/Home.png')} resizeMode='stretch'>
         
-        <StatusBar backgroundColor={'black'} barStyle={'light-content'}/>
+        <StatusBar translucent backgroundColor={'black'} barStyle={'dark-content'}/>
         <SafeAreaView style={{flex: 1}}>
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

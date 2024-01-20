@@ -9,19 +9,28 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Form from '../../components/Form'
 import Message from '../../components/Message'
 import UserReceived from '../../components/UserReceived';
+import { format, parse } from 'date-fns';
+import { vi } from 'date-fns/locale'; 
 
 const ChatBox = () => {
     const scrollViewRef = useRef<ScrollView>(null);
     // const [message,setMessage] = useState('');
     const [messList,setMessList] = useState<string[]>([]);
+      // Lấy thời gian hiện tại
+  const currentTime = new Date();
+  // Định dạng thời gian theo AM/PM và locale tiếng Việt
+  const formattedTime = format(currentTime, 'hh:mm a', { locale: vi });
     const handleSendMessage = (message: string) => { 
         //Add message
         setMessList([...messList,message]);
+        // console.log(formattedTime);
     }
 
      // Sử dụng useEffect để cuộn xuống cuối cùng khi messList thay đổi
     useEffect(() => {
-    scrollViewRef.current?.scrollToEnd({ animated: true });
+        if (scrollViewRef.current) {
+            scrollViewRef.current.scrollToEnd({ animated: true });
+          }
     }, [messList]);
 
     const handleShowTime = (index: number) => {
@@ -51,6 +60,7 @@ const ChatBox = () => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             keyboardVerticalOffset = {Platform.OS === 'ios' ? 40 : 20}
             style={styles.container}>
+            <StatusBar translucent backgroundColor={'black'} barStyle={'dark-content'}/>
             <View style={styles.topContainer}>
                 <View style={styles.leftTopContainer}>
                     <TouchableOpacity onPress={() => router.replace('/screen/HomeScreen')}>
@@ -82,7 +92,7 @@ const ChatBox = () => {
                 </View>
             </View>
 
-            <ScrollView ref={scrollViewRef}>
+            <ScrollView ref={scrollViewRef} style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
                 <View style={styles.body}>
                     {/* <View style={styles.userReceive}>
                         <Image style={styles.avatarMess} source={require('../../assets/images/Avatar.png')} />
@@ -92,10 +102,10 @@ const ChatBox = () => {
                         </View>
                     </View> */}
                     
-                    <UserReceived/>
+                    <UserReceived key={1} content={'Hello'} number={1}  onShowTime={() => handleShowTime(1)} time={formattedTime}  />
                     {
                         messList.map((item,index) => {
-                            return <Message key={index} content={item} number={index+1} onDeleteMess={() => handleDeleteMess(index)} onShowTime={() => handleShowTime(index)}/>
+                            return <Message key={index} content={item} number={index+1} onDeleteMess={() => handleDeleteMess(index)} onShowTime={() => handleShowTime(index)} time={formattedTime}/>
                         })
                     }
                 </View>
@@ -143,6 +153,17 @@ const styles =StyleSheet.create({
         flexDirection: 'column',
       },
     
+    scrollContent: {
+        paddingBottom: 0, // Đảm bảo giá trị này là 0
+    },
+
+
+    scrollView: {
+        flex: 1,
+        height: '100%',
+        flexShrink: 1,
+    },
+
     topContainer: {
         backgroundColor: 'white',
         // position: 'absolute',
@@ -156,10 +177,10 @@ const styles =StyleSheet.create({
         elevation: 10,
         shadowColor: '#333333',
         shadowOffset: {
-            width: 6,
-            height: 6,
+            width: 0,
+            height: 4,
         },
-        shadowOpacity: 0.6,
+        shadowOpacity: 0.1,
         shadowRadius: 4,
     },
 

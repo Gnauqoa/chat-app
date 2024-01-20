@@ -22,6 +22,7 @@ const CreateGroup = () => {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             keyboardVerticalOffset = {40}
             style={styles.container}>
+            <StatusBar translucent backgroundColor={'black'} barStyle={'dark-content'}/>
             <View style={styles.topContainer}>
                 <TouchableOpacity onPress={() => router.replace('/screen/CreateScreen')}>
                     <View style={styles.wrapIcon}>

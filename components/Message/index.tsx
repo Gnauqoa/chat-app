@@ -11,17 +11,18 @@ interface MessageProps {
     number: number,
     onDeleteMess: (index: number) => void;
     onShowTime: (index: number) => void;
+    time: string,
   }
 
 const Message: React.FC<MessageProps> = (props) => {
-  const currentTimeString: string = new Date().toLocaleTimeString();
+  // const currentTimeString: string = new Date().toLocaleTimeString();
+
   const [showTime,setShowTime] = useState(false);
-  const f = new Intl.DateTimeFormat("en-us", {
-    
-    
-  })
+  
+  const [time,setTime] = useState('');
   const handleShowTime = () => {
     props.onShowTime(1);
+    console.log(props.time);
     setShowTime(!showTime)
   }
 
@@ -38,7 +39,7 @@ const Message: React.FC<MessageProps> = (props) => {
       >
           <Text style={styles.userMessage}>{props.content}</Text>
       </LinearGradient>
-      {showTime && <Text style={styles.time}>{currentTimeString}</Text>}
+      {showTime && <Text style={styles.time}>{props.time}</Text>}
     </TouchableOpacity>     
   )
 }

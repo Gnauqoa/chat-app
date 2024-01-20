@@ -4,7 +4,7 @@ import color from '../../container/color';
 
 const styles = StyleSheet.create({
     userReceive: {
-        width: '100%',
+        width: '75%',
         flexDirection: 'row',
         alignItems: 'center',
         // backgroundColor: 'red',

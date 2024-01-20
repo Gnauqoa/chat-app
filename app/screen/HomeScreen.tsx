@@ -1,5 +1,5 @@
 import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import color from '../../container/color'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import { router } from 'expo-router';
@@ -7,9 +7,10 @@ import MessageItem from '../../components/MessageItem'
 
 
 const HomeScreen = () => {
+
   return (
     <ImageBackground style={{height: '100%', width: '100%'}} source={require('../../assets/images/Home.png')} resizeMode='stretch'>
-        <StatusBar backgroundColor={'black'} barStyle={'light-content'}/>
+        <StatusBar translucent backgroundColor={'black'} barStyle={'dark-content'}/>
         <SafeAreaView style={{flex: 1}}>
             <View style={styles.container}>
                 <View style={styles.topContainer}>
