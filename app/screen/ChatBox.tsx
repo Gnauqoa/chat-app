@@ -9,21 +9,30 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Form from '../../components/Form'
 import Message from '../../components/Message'
 import UserReceived from '../../components/UserReceived';
-import { format, parse } from 'date-fns';
+import { format, isToday, parse } from 'date-fns';
 import { vi } from 'date-fns/locale'; 
 
 const ChatBox = () => {
+    const displayDates: JSX.Element[] = [];
+    const [previousDate, setPreviousDate] = useState<string | null>(null);
     const scrollViewRef = useRef<ScrollView>(null);
     // const [message,setMessage] = useState('');
-    const [messList,setMessList] = useState<string[]>([]);
-      // Lấy thời gian hiện tại
-  const currentTime = new Date();
-  // Định dạng thời gian theo AM/PM và locale tiếng Việt
-  const formattedTime = format(currentTime, 'hh:mm a', { locale: vi });
+    const [messList, setMessList] = useState<{ message: string; createdAt: Date }[]>([]);
+    const [currentDate, setCurrentDate] = useState<Date | null>(null);
+    // Lấy thời gian hiện tại
+    const currentTime = new Date();
+    // Định dạng thời gian theo AM/PM và locale tiếng Việt
+    const formattedTime = format(currentTime, 'hh:mm a', { locale: vi });
     const handleSendMessage = (message: string) => { 
-        //Add message
-        setMessList([...messList,message]);
+        // Add newMessage
+        const newMessage = { message, createdAt: new Date() };
+        setMessList([...messList, newMessage]);
         // console.log(formattedTime);
+
+        // Check if the message is sent on a new day
+        if (!currentDate || !isToday(newMessage.createdAt)) {
+        setCurrentDate(newMessage.createdAt);
+        } 
     }
 
      // Sử dụng useEffect để cuộn xuống cuối cùng khi messList thay đổi
@@ -102,10 +111,57 @@ const ChatBox = () => {
                         </View>
                     </View> */}
                     
+                    {/* {messList.map((item, index) => {
+                        const formattedTime = format(item.createdAt, 'hh:mm a', { locale: vi });
+                        const displayDate = isToday(item.createdAt) ? 'Today' : format(item.createdAt, 'dd/MM/yyyy', { locale: vi });
+
+                        return (
+                            <View key={index}>
+                            {currentDate !== null && (
+                              <Text style={{ textAlign: 'center', marginBottom: 8, color: 'gray' }}>{displayDate}</Text>
+                            )}
+                          </View>
+                        );
+                    })} */}
+                    
                     <UserReceived key={1} content={'Hello'} number={1}  onShowTime={() => handleShowTime(1)} time={formattedTime}  />
                     {
-                        messList.map((item,index) => {
-                            return <Message key={index} content={item} number={index+1} onDeleteMess={() => handleDeleteMess(index)} onShowTime={() => handleShowTime(index)} time={formattedTime}/>
+                            messList.map((item, index) => {
+                                const formattedTime = format(item.createdAt, 'hh:mm a', { locale: vi });
+                                const currentDisplayDate = isToday(item.createdAt)
+                                ? 'Today'
+                                : format(item.createdAt, 'dd/MM/yyyy', { locale: vi });
+                                let showDate = false;
+                                let displayDate = null;
+                                
+                                if (previousDate !== currentDisplayDate) {
+                                    
+                                    setPreviousDate(currentDisplayDate);
+                                    showDate=true;
+                                    console.log(showDate)
+                                    displayDate = (
+                                        <Text key={`date-${index}`} style={{ textAlign: 'center', marginBottom: 8, color: 'gray' }}>
+                                          {currentDisplayDate}
+                                        </Text>
+                                      );
+                                      
+                                }
+                            return (
+                                <View key={index}>
+                                            {/* <Text key={`date-${index}`} style={{ textAlign: 'center', marginBottom: 10, marginTop:10, color: 'gray' }}>
+                                                {currentDisplayDate}
+                                             </Text> */}
+                                            {displayDates}
+                                            <Message
+                                            key={index}
+                                            content={item.message}
+                                            number={index + 1}
+                                            onDeleteMess={() => handleDeleteMess(index)}
+                                            onShowTime={() => handleShowTime(index)}
+                                            time={formattedTime}
+                                            />
+                                </View>
+                            );
                         })
                     }
                 </View>

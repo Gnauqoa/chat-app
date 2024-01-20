@@ -14,7 +14,7 @@ const UserItem = (props) => {
             <Image source={require('../../assets/images/Avatar.png')} style={styles.avatar} />
             <View style={styles.userInfoContainer}>
                 <Text style={styles.userHeading}>{props.username}</Text>
-                <Text style={styles.userInfo}>{props.studentID}</Text>
+                <Text style={styles.userInfo}>MSSV: {props.studentID}</Text>
             </View>
             
         </View>

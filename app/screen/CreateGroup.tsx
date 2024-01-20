@@ -1,10 +1,21 @@
 import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
-import { ScrollView, TextInput } from 'react-native-gesture-handler'
+import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler'
 import React, { useState } from 'react'
 import { Stack, router } from 'expo-router';
 import color from '../../container/color'
 import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace';
 import SelectUser from '../../components/SelectUser'
+import filter from 'lodash.filter'
+
+const sampleData = [
+    { username: 'john.doe@example.com', studentID: '123123' },
+    { username: 'jane.smith@example.com', studentID: '121212' },
+    { username: 'sam.jones@example.com', studentID: '323232' },
+    { username: 'ledangquang@gmail.com', studentID: '21521338' },
+    { username: 'nguyenthingocha@gmail.com', studentID: '21520217' },
+    { username: 'truonghuutho@gmail.com', studentID: '21521479' },
+    // Thêm các mục dữ liệu khác nếu cần
+  ];
 
 const CreateGroup = () => {
     const [count,setCount] = useState(0);
@@ -15,6 +26,20 @@ const CreateGroup = () => {
         else {
             setCount(count-1);
         }
+    }
+
+    const [data, setData] = useState<{ username: string; studentID: string; }[]>(sampleData);
+    const [fullData, setFullData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
+        const formattedQuery = query.toLowerCase();
+        const filteredData = filter(sampleData, (item) => {
+          const usernameLower = item.username.toLowerCase();
+          const emailLower = item.studentID.toLowerCase();
+          return usernameLower.includes(formattedQuery) || emailLower.includes(formattedQuery);
+        });
+        setData(filteredData);
     }
   return (
 <SafeAreaView style={{flex: 1}}>
@@ -36,13 +61,23 @@ const CreateGroup = () => {
                 <Text style={styles.headingSmall}>
                     Đến
                 </Text>
-                <TextInput style={styles.input} />
+                <TextInput 
+                    autoCapitalize='none' 
+                    placeholder='Search' 
+                    clearButtonMode='always'                 
+                    style={styles.input} 
+                    value={searchQuery}
+                    onChangeText={(query) => handleSearch(query)}/>
             </View>
             <View style={styles.bodyContainer}>
                 <Text style={styles.headingSmall}>Gợi ý</Text>
-                <ScrollView style={styles.listItems}>
-                    <SelectUser onSelect={handleSelectUser} />
-                </ScrollView>           
+                <FlatList 
+                            data={data}
+                            keyExtractor={(item) => item.username}
+                            renderItem={({item}) => (
+                                <SelectUser username={item.username} studentID={item.studentID} onSelect={handleSelectUser} />
+                            )}
+                />         
             </View>
             {count>0 ? (
             <TouchableOpacity onPress={() => router.push('/screen/ChatBox')} style={styles.outer}> 
