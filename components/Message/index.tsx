@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import styles from './style'
 import color from '../../container/color';
@@ -14,9 +14,15 @@ interface MessageProps {
   }
 
 const Message: React.FC<MessageProps> = (props) => {
+  const currentTimeString: string = new Date().toLocaleTimeString();
+  const [showTime,setShowTime] = useState(false);
+  const f = new Intl.DateTimeFormat("en-us", {
+    
+    
+  })
   const handleShowTime = () => {
     props.onShowTime(1);
-    
+    setShowTime(!showTime)
   }
 
   const handleDeleteMess = () => {
@@ -32,7 +38,7 @@ const Message: React.FC<MessageProps> = (props) => {
       >
           <Text style={styles.userMessage}>{props.content}</Text>
       </LinearGradient>
-      <Text style={styles.time}>09:25 AM</Text>
+      {showTime && <Text style={styles.time}>{currentTimeString}</Text>}
     </TouchableOpacity>     
   )
 }

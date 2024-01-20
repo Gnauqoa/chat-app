@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     },
 
     wrapMess: {
-        // alignSelf: 'flex-end',
+        alignSelf: 'flex-end',
         borderRadius: 20,
         paddingHorizontal: 10,
         paddingVertical: 12,

@@ -1,4 +1,4 @@
-import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
+import { Alert, View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import React, { useState } from 'react'
 import { Stack, router } from 'expo-router';
@@ -19,17 +19,31 @@ const ChatBox = () => {
     }
 
     const handleShowTime = (index: number) => {
-        alert(index);
+        
     }  
 
     const handleDeleteMess = (index: number) => {
-        alert('haha');
+        Alert.alert('Delete message', 'Do you really want to delete this message', [
+            {
+              text: 'Cancel',
+              onPress: () => {},
+              style: 'cancel',
+            },
+            {
+                text: 'OK', 
+                onPress: () => {
+                    // Delete task
+                    const messageListTmp = [...messList];
+                    messageListTmp.splice(index,1);
+                    setMessList(messageListTmp);
+                } },
+          ]);
     }
   return (
     <SafeAreaView style={{flex: 1}}>
         <KeyboardAvoidingView 
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset = {Platform.OS === 'ios' ? 40 : 40}
+            keyboardVerticalOffset = {Platform.OS === 'ios' ? 40 : 20}
             style={styles.container}>
             <View style={styles.topContainer}>
                 <View style={styles.leftTopContainer}>

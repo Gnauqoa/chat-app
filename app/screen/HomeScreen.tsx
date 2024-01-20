@@ -37,8 +37,6 @@ const HomeScreen = () => {
                         <MessageItem/>
                         <MessageItem/>
                     </ScrollView>
-                
-
                 </View>
                 
 

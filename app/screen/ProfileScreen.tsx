@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { router } from 'expo-router';
 import color from '../../container/color'
 import { LinearGradient } from 'expo-linear-gradient';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const ProfileScreen = () => {
@@ -25,56 +26,87 @@ const ProfileScreen = () => {
                     Thông tin cá nhân
                 </Text>
                 <View style={styles.body}>
-                    <View style={styles.boxRectangle}>
-                    </View>
-                    <View style={styles.bodyContainer}>
-                        <View style={styles.avatarUser}>
+                    <View style={styles.whiteRectangle}></View>
+                    <View style={styles.boxContainer}>
+                            <Image style={styles.avatar} source={require('../../assets/images/Avatar.png')} />
+                            <View>
+                                <View style={styles.nameContainer}>
+                                    <Text style={styles.name}>Your name</Text>
+                                    <Text style={styles.caption}>Chú thích</Text>
+                                </View>
+
+                                <TouchableOpacity onPress={() => router.push('/screen/EditProfileScreen')}>
+                                    <LinearGradient 
+                                        colors={[color.gradient1,color.gradient2]}
+                                        start={{x:0.5, y:0.5}}
+                                        style={styles.wrapBtn}
+                                    >
+                                        <Text style={styles.editBtn}>
+                                            Edit Your Profile
+                                        </Text>
+                                    </LinearGradient>
+                                </TouchableOpacity>
+                                <ScrollView>
+                                    <View style={styles.wrapInfosContainer}>
+                                        <View style={styles.infoContainer}>
+                                            <Text style={styles.title}>Gmail</Text>
+                                            <Text style={styles.content}>21521479@gm.uit.edu.vn</Text>
+                                        </View>
+                                        <View style={styles.infoContainer}>
+                                            <Text style={styles.title}>Mã số sinh viên</Text>
+                                            <Text style={styles.content}>21521479</Text>
+                                        </View>
+                                        <View style={styles.infoContainer}>
+                                            <Text style={styles.title}>Khoa</Text>
+                                            <Text style={styles.content}>Khoa học Máy tính</Text>
+                                        </View>
+                                        <View style={styles.infoContainer}>
+                                            <Text style={styles.title}>Lớp</Text>
+                                            <Text style={styles.content}>KHCL2021.1</Text>
+                                        </View>
+                                        <View style={styles.infoContainer}>
+                                            <Text style={styles.title}>Ngày sinh</Text>
+                                            <Text style={styles.content}>03/07/2003</Text>
+                                        </View>
+
+                                    </View>
+                                </ScrollView>
+                            </View>
+                            
+                        </View>
+                    <View style={styles.avatarContainer}>
+                        {/* <View style={styles.avatarUser}>
                             <Image style={styles.avatar} source={require('../../assets/images/Avatar.png')} />
 
-                            <Text style={styles.name}>
-                                Your name
-                            </Text>
+                        </View> */}
 
-                            <Text style={styles.caption}> 
-                                Chú thích
-                            </Text>
 
-                        </View>
 
-                        <TouchableOpacity onPress={() => router.push('/screen/EditProfileScreen')}>
-                            <LinearGradient 
-                                colors={[color.gradient1,color.gradient2]}
-                                start={{x:0.5, y:0.5}}
-                                style={styles.wrapBtn}
-                            >
-                                <Text style={styles.editBtn}>
-                                    Edit Your Profile
-                                </Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
+                        {/* <ScrollView>
+                            <View style= {styles.wrapInfosContainer}>
+                                <View style={styles.infoContainer}>
+                                    <Text style={styles.title}>Gmail</Text>
+                                    <Text style={styles.content}>{gmail}</Text>
+                                </View>
+                                <View style={styles.infoContainer}>
+                                    <Text style={styles.title}>Mã số sinh viên</Text>
+                                    <Text style={styles.content}>{maSV}</Text>
+                                </View>
+                                <View style={styles.infoContainer}>
+                                    <Text style={styles.title}>Khoa</Text>
+                                    <Text style={styles.content}>{major}</Text>
+                                </View>
+                                <View style={styles.infoContainer}>
+                                    <Text style={styles.title}>Lớp</Text>
+                                    <Text style={styles.content}>{nameClass}</Text>
+                                </View>
+                                <View style={styles.infoContainer}>
+                                    <Text style={styles.title}>Ngày sinh</Text>
+                                    <Text style={styles.content}>{birth}</Text>
+                                </View>
+                            </View>
+                        </ScrollView> */}
 
-                        <View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Gmail</Text>
-                                <Text style={styles.content}>{gmail}</Text>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Mã số sinh viên</Text>
-                                <Text style={styles.content}>{maSV}</Text>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Khoa</Text>
-                                <Text style={styles.content}>{major}</Text>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Lớp</Text>
-                                <Text style={styles.content}>{nameClass}</Text>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Ngày sinh</Text>
-                                <Text style={styles.content}>{birth}</Text>
-                            </View>
-                        </View>
                     </View>
 
 
@@ -112,23 +144,44 @@ const styles =StyleSheet.create({
         width: '100%',
     },
 
+    wrapInfosContainer: {
+        // backgroundColor: 'red'
+    },
+
+    nameContainer: {
+        // backgroundColor: 'red',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10 
+    },
+
     body: {
         flex: 1,
-        // paddingHorizontal: 20,
-        paddingTop: 70,
-        // backgroundColor: color.white,
+        // justifyContent: 'flex-end',
         
     },
 
-    boxRectangle: {
+    whiteRectangle: {
+        top: 50,
         backgroundColor: color.white,
+        flex: 1,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
-        flex:1,
+    },
+
+    boxContainer: {
+        // alignSelf: 'center',
+        position: 'absolute',
+        // backgroundColor: color.white,
+        // borderTopLeftRadius: 40,
+        // borderTopRightRadius: 40,
+        flex: 1,
+        width: '100%'
+        
         // marginTop: ,
     },
 
-    bodyContainer: {
+    avatarContainer: {
         position: 'absolute',
         width: '100%',
     },
@@ -189,6 +242,7 @@ const styles =StyleSheet.create({
         borderRadius: 120,
         borderWidth: 4,
         borderColor: color.white,
+        alignSelf: 'center',
     },
 
     name: {
