@@ -67,6 +67,7 @@ const Login: React.FC<LoginProps> = (props) => {
           </Text>
           <View>
             <TextInput
+              autoCapitalize='none'
               onChangeText={(email) => setEmail(email)}
               style={styles.input}
             />
@@ -82,6 +83,7 @@ const Login: React.FC<LoginProps> = (props) => {
           </Text>
           <View>
             <TextInput
+              autoCapitalize='none'
               value={password}
               onChangeText={(password) => setPwd(password)}
               style={styles.input}

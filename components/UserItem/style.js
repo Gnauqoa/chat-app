@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 30,
         paddingVertical: 10,
-        borderBottomWidth: 0.4,
-        borderBottomColor: color.note,
+        // borderBottomWidth: 0.4,
+        // borderBottomColor: color.note,
         
     },
 

@@ -23,7 +23,7 @@ const CreateScreen = () => {
 
                 <View style={styles.inputFind}>
                     <Image source={require('../../assets/images/find_black.png')} style={styles.iconSmall} />
-                    <TextInput style={styles.input}/>
+                    <TextInput autoCapitalize='none' placeholder='Search' clearButtonMode='always' style={styles.input}/>
                 </View>
             </View>
             <View style={styles.bodyContainer}>

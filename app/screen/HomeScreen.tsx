@@ -1,14 +1,43 @@
-import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity } from 'react-native'
-import React, { useEffect } from 'react'
+import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import color from '../../container/color'
-import { ScrollView, TextInput } from 'react-native-gesture-handler'
+import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler'
 import { router } from 'expo-router';
 import MessageItem from '../../components/MessageItem'
+import UserItem from '../../components/UserItem';
+import { it } from 'date-fns/locale';
+import filter from 'lodash.filter'
 
+const sampleData = [
+    { username: 'john.doe@example.com', studentID: '123123' },
+    { username: 'jane.smith@example.com', studentID: '121212' },
+    { username: 'sam.jones@example.com', studentID: '323232' },
+    { username: 'ledangquang@gmail.com', studentID: '21521338' },
+    { username: 'nguyenthingocha@gmail.com', studentID: '21520217' },
+    { username: 'truonghuutho@gmail.com', studentID: '21521479' },
+    // Thêm các mục dữ liệu khác nếu cần
+  ];
 
 const HomeScreen = () => {
 
-  return (
+    const [data, setData] = useState<{ username: string; studentID: string; }[]>(sampleData);
+    const [fullData, setFullData] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [count,setCount] = useState(0);
+
+
+    const handleSearch = (query: string) => {
+        setSearchQuery(query);
+        const formattedQuery = query.toLowerCase();
+        const filteredData = filter(sampleData, (item) => {
+          const usernameLower = item.username.toLowerCase();
+          const emailLower = item.studentID.toLowerCase();
+          return usernameLower.includes(formattedQuery) || emailLower.includes(formattedQuery);
+        });
+        setData(filteredData);
+    }
+
+    return (
     <ImageBackground style={{height: '100%', width: '100%'}} source={require('../../assets/images/Home.png')} resizeMode='stretch'>
         <StatusBar translucent backgroundColor={'black'} barStyle={'dark-content'}/>
         <SafeAreaView style={{flex: 1}}>
@@ -16,28 +45,28 @@ const HomeScreen = () => {
                 <View style={styles.topContainer}>
                     <View style={styles.inputFind}>
                         <Image source={require('../../assets/images/find.png')} style={styles.iconSmall} />
-                        <TextInput style={styles.input}/>
+                        <TextInput 
+                            autoCapitalize='none' 
+                            placeholder='Search' 
+                            placeholderTextColor={color.white} 
+                            style={styles.input} 
+                            clearButtonMode='always' 
+                            value={searchQuery}
+                            onChangeText={(query) => handleSearch(query)}/>
                     </View>
                     <TouchableOpacity onPress={() => router.push("/screen/CreateScreen")}>
                        <Image source={require('../../assets/images/create.png')} style={styles.iconLarge} />
                     </TouchableOpacity>
                 </View>
                 <View style={styles.bodyContainer}>
-                    <ScrollView>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                        <MessageItem/>
-                    </ScrollView>
+
+                        <FlatList 
+                            data={data}
+                            keyExtractor={(item) => item.username}
+                            renderItem={({item}) => (
+                                <UserItem username={item.username} studentID={item.studentID} />
+                            )}
+                        />
                 </View>
                 
 
