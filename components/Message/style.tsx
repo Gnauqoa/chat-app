@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 12,
         marginBottom: 8,
-        maxWidthwidth: '75%',
+        maxWidth: '75%',
     },
 
     sendContainer: {

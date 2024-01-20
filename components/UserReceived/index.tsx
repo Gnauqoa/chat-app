@@ -61,11 +61,11 @@ const styles = StyleSheet.create({
   },
   avatarContainer: {
     paddingTop: 16,
-    paddingBottom: 16,
+    paddingBottom: 4,
     justifyContent: 'flex-start',
     alignItems: 'flex-end',
     gap: 10,
-    backgroundColor: 'red',
+    
   },
   avatar: {
     width: 30,
@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     gap: 6,
+    maxWidth: '75%',
   },
   personName: {
     width: 79,
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   messageText: {
-    textAlign: 'right',
+    textAlign: 'left',
     color: '#000E08',
     fontSize: 14,
     fontFamily: 'Roboto',
