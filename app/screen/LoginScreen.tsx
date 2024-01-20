@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity,StyleSheet, Image, Alert, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity,StyleSheet, Image, Alert, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
 import color from './../../container/color'
 import { router } from 'expo-router';
 
@@ -49,9 +49,13 @@ const Login: React.FC<LoginProps> = (props) => {
   }
 
   return (
-    <View style={styles.container}>
+    
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset = {40}
+      style={styles.container}>
       <View style={styles.loginContainer}>
-        <Image source={require('../../assets/images/logoweib.png')} />
+        <Image style={styles.logo} source={require('../../assets/images/logoweib.png')} />
         <Text style={styles.title}>
           Log in to Chatbox
         </Text>
@@ -115,7 +119,7 @@ const Login: React.FC<LoginProps> = (props) => {
           </Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -125,6 +129,12 @@ const styles =StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  logo: {
+    width: 238,
+    height: 145,
+    resizeMode: 'stretch',
   },
 
   loginContainer: {

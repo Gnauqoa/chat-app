@@ -1,4 +1,4 @@
-import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import React, { useState } from 'react'
 import { Stack, router } from 'expo-router';
@@ -18,10 +18,15 @@ const CreateGroup = () => {
     }
   return (
 <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset = {40}
+            style={styles.container}>
             <View style={styles.topContainer}>
                 <TouchableOpacity onPress={() => router.replace('/screen/CreateScreen')}>
-                    <Image  source={require('../../assets/images/backBtn.png')} style={styles.iconBack} />
+                    <View style={styles.wrapIcon}>
+                        <Image  source={require('../../assets/images/backBtn.png')} style={styles.iconBack} />
+                    </View>
                 </TouchableOpacity>
 
                 <Text style={styles.heading}>Tin nhắn mới</Text>
@@ -44,7 +49,7 @@ const CreateGroup = () => {
             </TouchableOpacity>
             ) : null}
 
-        </View>
+        </KeyboardAvoidingView>
 
     </SafeAreaView>
   )
@@ -99,9 +104,14 @@ const styles =StyleSheet.create({
         // paddingHorizontal: 20,
     },
 
+    wrapIcon: {
+        paddingVertical: 10,
+        // backgroundColor: 'red',
+    },
+
     iconBack: {
-        width: 24,
-        height: 20,
+        width: 14,
+        height: 10,
         marginRight: 20
         // backgroundColor: 'red',
     },

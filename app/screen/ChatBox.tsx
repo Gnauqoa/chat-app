@@ -1,4 +1,4 @@
-import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
 import { ScrollView, TextInput } from 'react-native-gesture-handler'
 import React, { useState } from 'react'
 import { Stack, router } from 'expo-router';
@@ -13,18 +13,30 @@ import UserReceived from '../../components/UserReceived';
 const ChatBox = () => {
     // const [message,setMessage] = useState('');
     const [messList,setMessList] = useState<string[]>([]);
-    const handleSendMessage = (message: string) => {
-        
+    const handleSendMessage = (message: string) => { 
         //Add message
         setMessList([...messList,message])
     }
+
+    const handleShowTime = (index: number) => {
+        alert(index);
+    }  
+
+    const handleDeleteMess = (index: number) => {
+        alert('haha');
+    }
   return (
     <SafeAreaView style={{flex: 1}}>
-        <View style={styles.container}>
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset = {Platform.OS === 'ios' ? 40 : 40}
+            style={styles.container}>
             <View style={styles.topContainer}>
                 <View style={styles.leftTopContainer}>
                     <TouchableOpacity onPress={() => router.replace('/screen/HomeScreen')}>
-                        <Image  source={require('../../assets/images/backBtn.png')} style={styles.iconBack} />
+                        <View style={styles.wrapBackBtn}>
+                            <Image  source={require('../../assets/images/backBtn.png')} style={styles.iconBack} />
+                        </View>
                     </TouchableOpacity>
 
                     <View style={styles.userContainer}>
@@ -52,18 +64,18 @@ const ChatBox = () => {
 
             <ScrollView>
                 <View style={styles.body}>
-                    <View style={styles.userReceive}>
+                    {/* <View style={styles.userReceive}>
                         <Image style={styles.avatarMess} source={require('../../assets/images/Avatar.png')} />
                         <View style={styles.messContainer}>
                             <Text style={styles.messageRecv}>Hello</Text>
                             <Text style={styles.messageRecv}>I have some question for you!</Text>
                         </View>
-                    </View>
+                    </View> */}
                     
-                    {/* <UserReceived/> */}
+                    <UserReceived/>
                     {
                         messList.map((item,index) => {
-                            return <Message key={index} content={item} number={index+1}/>
+                            return <Message key={index} content={item} number={index+1} onDeleteMess={() => handleDeleteMess(index)} onShowTime={() => handleShowTime(index)}/>
                         })
                     }
                 </View>
@@ -89,7 +101,7 @@ const ChatBox = () => {
             </TouchableOpacity> */}
 
             {/* </KeyboardAvoidingView> */}
-        </View>
+        </KeyboardAvoidingView>
 
     </SafeAreaView>
   )
@@ -100,7 +112,7 @@ export default ChatBox
 const styles =StyleSheet.create({
     container: {
         flex: 1,
-        
+        backgroundColor: color.white,
     },
 
     body: {
@@ -112,13 +124,23 @@ const styles =StyleSheet.create({
       },
     
     topContainer: {
-        // backgroundColor: 'red',
-        marginHorizontal: 20,
-        marginVertical: 20,
+        backgroundColor: 'white',
+        // position: 'absolute',
+        // marginHorizontal: 20,
+        // paddingHorizontal: 20,
+        paddingVertical: 20,
+        // marginVertical: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingVertical: 4,
         alignItems: 'center',
+        elevation: 10,
+        shadowColor: '#333333',
+        shadowOffset: {
+            width: 6,
+            height: 6,
+        },
+        shadowOpacity: 0.6,
+        shadowRadius: 4,
     },
 
     avatar: {
@@ -149,11 +171,18 @@ const styles =StyleSheet.create({
         color: color.note,
         fontSize: 12,
     },
+    
+    wrapBackBtn: {
+        paddingVertical: 12,
+        paddingLeft: 20,
+        // backgroundColor: 'red',
+    },
 
     iconBack: {
-        width: 24,
-        height: 20,
-        marginRight: 20
+        width: 14,
+        height: 10,
+        marginRight: 20,
+        // padding: 20,
         // backgroundColor: 'red',
     },
 
@@ -165,6 +194,7 @@ const styles =StyleSheet.create({
     rightTopContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+        marginRight: 20,
     },
 
     iconPhone: {
@@ -196,7 +226,6 @@ const styles =StyleSheet.create({
     messContainer: {
         width: '70%',
         flexDirection: 'column',
-        
     },
 
     messageRecv: {

@@ -7,9 +7,8 @@ const UserReceived = () => {
   return (
     <View style={styles.userReceive}>
         <Image style={styles.avatarMess} source={require('../../assets/images/Avatar.png')} />
-        <View style={styles.messContainer}>
-            <Text style={styles.messageRecv}>Hello</Text>
-            <Text style={styles.messageRecv}>I have some question for you!</Text>
+        <View  style={styles.wrapMessage}>
+          <Text style={styles.messageRecv}>Hello</Text>
         </View>
     </View>
   )

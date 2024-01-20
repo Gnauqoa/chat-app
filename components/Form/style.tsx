@@ -5,7 +5,6 @@ import color from '../../container/color';
 const styles = StyleSheet.create({
     Form: {
         width:'auto',
-        bottom: 20,
         // backgroundColor: 'green',
         flexDirection: 'row',
         paddingHorizontal: 20,
@@ -25,7 +24,8 @@ const styles = StyleSheet.create({
         backgroundColor: color.gray,
         borderRadius: 100,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingRight: 10,
     },
 
     iconMicro: {
@@ -35,8 +35,8 @@ const styles = StyleSheet.create({
     },
 
     iconSend: {
-        width: 28,
-        height: 28,
+        width: 34,
+        height: 34,
         resizeMode: 'stretch',
     },
 

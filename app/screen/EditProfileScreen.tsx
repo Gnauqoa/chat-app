@@ -1,16 +1,20 @@
-import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text,Image, SafeAreaView, ImageBackground, StatusBar, Linking,StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native'
 import { router } from 'expo-router';
 import color from '../../container/color'
 import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react'
-import { TextInput } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 
 const EditProfileScreen = () => {
   return (
     <ImageBackground style={{height: '100%', width: '100%'}} source={require('../../assets/images/Home.png')} resizeMode='stretch'>
+        
         <StatusBar backgroundColor={'black'} barStyle={'light-content'}/>
         <SafeAreaView style={{flex: 1}}>
-            <View style={styles.container}>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                keyboardVerticalOffset = {Platform.OS === "ios" ? 10 : 0}
+                style={styles.container}>
                 <TouchableOpacity onPress={() => router.push('/screen/ProfileScreen')}>
                     <Image style={styles.backBtn} source={require('../../assets/images/backBtnWhite.png')} />
                 </TouchableOpacity>
@@ -19,8 +23,36 @@ const EditProfileScreen = () => {
                 </Text>
                 <View style={styles.body}>
                     <View style={styles.boxRectangle}>
+                        <View>
+                            <ScrollView>
+                                <View style={styles.totalContainer}>
+                                    <View style={styles.infoContainer}>
+                                        <Text style={styles.title}>Gmail</Text>
+                                        <TextInput underlineColorAndroid={color.underline} style={styles.content}>21521479@gm.uit.edu.vn</TextInput>
+                                    </View>
+                                    <View style={styles.infoContainer}>
+                                        <Text style={styles.title}>Mã số sinh viên</Text>
+                                        <TextInput underlineColorAndroid={color.underline} style={styles.content}>21521479</TextInput>
+                                    </View>
+                                    <View style={styles.infoContainer}>
+                                        <Text style={styles.title}>Khoa</Text>
+                                        <TextInput underlineColorAndroid={color.underline} style={styles.content}>Khoa học Máy tính</TextInput>
+                                    </View>
+                                    <View style={styles.infoContainer}>
+                                        <Text style={styles.title}>Lớp</Text>
+                                        <TextInput underlineColorAndroid={color.underline} style={styles.content}>KHCL2021.1</TextInput>
+                                    </View>
+                                    <View style={styles.infoContainer}>
+                                        <Text style={styles.title}>Ngày sinh</Text>
+                                        <TextInput underlineColorAndroid={color.underline} style={styles.content}>03/07/2003</TextInput>
+                                    </View>
+
+                                </View>
+                            </ScrollView>
+                        </View>
+                        
                     </View>
-                    <View style={styles.bodyContainer}>
+                    {/* <View style={styles.bodyContainer}>
                         <View style={styles.avatarUser}>
                             <Image style={styles.avatar} source={require('../../assets/images/Avatar.png')} />
 
@@ -28,52 +60,30 @@ const EditProfileScreen = () => {
                                 Your name
                             </Text>
 
-                            <Text style={styles.caption}> 
+                            <TextInput style={styles.caption}> 
                                 Chú thích
-                            </Text>
-
+                            </TextInput>
                         </View>
 
-                        <View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Gmail</Text>
-                                <TextInput underlineColorAndroid={color.underline} style={styles.content}>21521479@gm.uit.edu.vn</TextInput>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Mã số sinh viên</Text>
-                                <TextInput underlineColorAndroid={color.underline} style={styles.content}>21521479</TextInput>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Khoa</Text>
-                                <TextInput underlineColorAndroid={color.underline} style={styles.content}>Khoa học Máy tính</TextInput>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Lớp</Text>
-                                <TextInput underlineColorAndroid={color.underline} style={styles.content}>KHCL2021.1</TextInput>
-                            </View>
-                            <View style={styles.infoContainer}>
-                                <Text style={styles.title}>Ngày sinh</Text>
-                                <TextInput underlineColorAndroid={color.underline} style={styles.content}>03/07/2003</TextInput>
-                            </View>
-                        </View>
-
-                        <TouchableOpacity  onPress={() => router.push('/screen/ProfileScreen')}>
-                            <LinearGradient 
-                                colors={[color.gradient1,color.gradient2]}
-                                start={{x:0.5, y:0.5}}
-                                style={styles.wrapBtn}
-                            >
-                                <Text style={styles.editBtn}>
-                                    Update
-                                </Text>
-                            </LinearGradient>
-                        </TouchableOpacity>
-                    </View>
+                    </View> */}
 
 
                 </View>
 
-            </View>
+                <View style={styles.bottomContainer}>
+                            <TouchableOpacity  onPress={() => router.push('/screen/ProfileScreen')}>
+                                <LinearGradient 
+                                    colors={[color.gradient1,color.gradient2]}
+                                    start={{x:0.5, y:0.5}}
+                                    style={styles.wrapBtn}
+                                >
+                                    <Text style={styles.editBtn}>
+                                        Update
+                                    </Text>
+                                </LinearGradient>
+                            </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
         </SafeAreaView>
     </ImageBackground>
   )
@@ -92,16 +102,28 @@ const styles =StyleSheet.create({
         flex: 1,
         // paddingHorizontal: 20,
         paddingTop: 70,
-        // backgroundColor: color.white,
+        // backgroundColor: 'red',
         
     },
 
     boxRectangle: {
+        justifyContent: 'center',
         backgroundColor: color.white,
         borderTopLeftRadius: 40,
         borderTopRightRadius: 40,
         flex:1,
         // marginTop: ,
+    },
+
+    totalContainer: {
+        flex: 1,
+        // backgroundColor: 'red',
+    },
+
+    bottomContainer: {
+        height: '10%',
+        backgroundColor: color.white,
+
     },
 
     bodyContainer: {
