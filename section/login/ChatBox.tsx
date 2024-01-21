@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import React, { useEffect, useRef, useState } from "react";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import color from "../../container/color";
 
 import Form from "../../components/Form";
@@ -24,6 +24,8 @@ import { format, isToday } from "date-fns";
 import { vi } from "date-fns/locale";
 
 const ChatBox = () => {
+  // const { roomId } = useLocalSearchParams();
+
   const displayDates: JSX.Element[] = [];
   const [previousDate, setPreviousDate] = useState<string | null>(null);
   const scrollViewRef = useRef<ScrollView>(null);
@@ -89,9 +91,7 @@ const ChatBox = () => {
         />
         <View style={styles.topContainer}>
           <View style={styles.leftTopContainer}>
-            <TouchableOpacity
-              onPress={() => router.replace("/screen/HomeScreen")}
-            >
+            <TouchableOpacity onPress={router.back}>
               <View style={styles.wrapBackBtn}>
                 <Image
                   source={require("../../assets/images/backBtn.png")}
@@ -134,27 +134,6 @@ const ChatBox = () => {
           contentContainerStyle={styles.scrollContent}
         >
           <View style={styles.body}>
-            {/* <View style={styles.userReceive}>
-                        <Image style={styles.avatarMess} source={require('../../assets/images/Avatar.png')} />
-                        <View style={styles.messContainer}>
-                            <Text style={styles.messageRecv}>Hello</Text>
-                            <Text style={styles.messageRecv}>I have some question for you!</Text>
-                        </View>
-                    </View> */}
-
-            {/* {messList.map((item, index) => {
-                        const formattedTime = format(item.createdAt, 'hh:mm a', { locale: vi });
-                        const displayDate = isToday(item.createdAt) ? 'Today' : format(item.createdAt, 'dd/MM/yyyy', { locale: vi });
-
-                        return (
-                            <View key={index}>
-                            {currentDate !== null && (
-                              <Text style={{ textAlign: 'center', marginBottom: 8, color: 'gray' }}>{displayDate}</Text>
-                            )}
-                          </View>
-                        );
-                    })} */}
-
             <UserReceived
               key={1}
               content={"Hello"}
@@ -191,9 +170,6 @@ const ChatBox = () => {
               }
               return (
                 <View key={index}>
-                  {/* <Text key={`date-${index}`} style={{ textAlign: 'center', marginBottom: 10, marginTop:10, color: 'gray' }}>
-                                                {currentDisplayDate}
-                                             </Text> */}
                   {displayDates}
                   <Message
                     key={index}
@@ -210,22 +186,6 @@ const ChatBox = () => {
         </ScrollView>
 
         <Form onSendMess={handleSendMessage} />
-
-        {/* <KeyboardAvoidingView 
-                style={styles.addTask}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset = {10}
-            > */}
-
-        {/* <TouchableOpacity
-            onPress= {handleAddMessage}
-            >
-                <View style={styles.iconWrapper}>
-                    <Text style={styles.icon}>+</Text>
-                </View>
-            </TouchableOpacity> */}
-
-        {/* </KeyboardAvoidingView> */}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

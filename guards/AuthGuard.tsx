@@ -9,7 +9,7 @@ const AuthGuard = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { auth } = useContext(AuthContext) as AuthContextType;
   useEffect(() => {
-    if (auth && ready) router.replace("/(main)/_layout");
+    if (auth && ready) router.replace("/(main)/home");
   }, [auth, ready]);
 
   return <>{children}</>;

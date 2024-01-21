@@ -5,10 +5,12 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { Link, SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
-import { useColorScheme } from "react-native";
+import { TouchableOpacity, useColorScheme } from "react-native";
 import ContextProvider from "../context";
+import { AntDesign } from "@expo/vector-icons";
+import Colors from "../constants/Colors";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -59,6 +61,13 @@ function RootLayoutNav() {
             name="(auth)"
             options={{
               headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="[roomId]"
+            options={{
+              headerShown: false,
+              presentation: "modal",
             }}
           />
         </Stack>

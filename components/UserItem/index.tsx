@@ -5,9 +5,9 @@ import styles from "./style";
 import { router } from "expo-router";
 import { Room } from "../../types/room";
 
-const UserItem = ({ name, owner }: Room) => {
+const UserItem = ({ name, owner, id }: Room) => {
   return (
-    <TouchableOpacity onPress={() => router.push("/screen/ChatBox")}>
+    <TouchableOpacity onPress={() => router.push(`/${id.toString()}`)}>
       <View style={styles.userContainer}>
         <Image
           source={require("../../assets/images/Avatar.png")}
