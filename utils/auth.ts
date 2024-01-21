@@ -1,10 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axiosForChatApp from "../config/axios";
-import { refreshAccessTokenAPI } from "../api/auth";
 
 export async function saveAccessToken(accessToken: string) {
   await AsyncStorage.setItem("access_token", accessToken);
-  axiosForChatApp.defaults.headers.Authorization = `Bearer ${accessToken}`;
 }
 
 export async function saveRefreshToken(refreshToken: string) {
@@ -31,13 +28,4 @@ export async function getRefreshToken() {
   // Example using AsyncStorage:
   const refreshToken = await AsyncStorage.getItem("refresh_token");
   return refreshToken;
-}
-
-// Function to refresh the access token using the refresh token
-export async function refreshAccessToken(refreshToken: string) {
-  // Implement your logic to send a request to refresh the access token
-  // Example:
-  const response = await refreshAccessTokenAPI(refreshToken);
-  axiosForChatApp.defaults.headers.Authorization = `Bearer ${response.data.data.access_token}`;
-  return response.data.access_token;
 }

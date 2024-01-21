@@ -1,12 +1,10 @@
 import axios from "axios";
-import {
-  getAccessToken,
-  getRefreshToken,
-  refreshAccessToken,
-} from "../utils/auth";
+import { getAccessToken, getRefreshToken, saveTokens } from "../utils/auth";
+
+const serverUrl = "192.168.1.5";
 
 const axiosForChatApp = axios.create({
-  baseURL: "localhost:3000",
+  baseURL: `http://${serverUrl}:3000/api/v1`,
   timeout: 10000, // Timeout in milliseconds
   headers: {
     "Content-Type": "application/json",
@@ -44,10 +42,15 @@ axiosForChatApp.interceptors.response.use(
       // Attempt to refresh the access token using the refresh token
       const refreshToken = await getRefreshToken();
       if (refreshToken) {
-        const newAccessToken = await refreshAccessToken(refreshToken);
-
+        const tokens = await axiosForChatApp.post("/users/refresh_token", {
+          refresh_token: refreshToken,
+        });
+        await saveTokens(
+          tokens.data.data.accessToken,
+          tokens.data.data.refreshToken
+        );
         // Update the original request with the new access token
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${tokens.data.data.accessToken}`;
 
         // Retry the original request with the new access token
         return axiosForChatApp(originalRequest);

@@ -1,7 +1,9 @@
 import axiosForChatApp from "../config/axios";
 import { AxiosResponse } from "axios";
 
-export function refreshAccessTokenAPI(refreshToken: string) {
+export function refreshAccessTokenAPI(
+  refreshToken: string
+): Promise<AxiosResponse<LoginResponseType>> {
   return axiosForChatApp.post("/users/refresh_token", {
     refresh_token: refreshToken,
   });

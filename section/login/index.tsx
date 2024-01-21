@@ -13,54 +13,48 @@ import {
 } from "react-native";
 import color from "../../container/color";
 import { router } from "expo-router";
+import useAuth from "../../hooks/useAuth";
 
 interface LoginProps {
   // Add any props if needed
 }
 
 const Login: React.FC<LoginProps> = (props) => {
+  const { login } = useAuth();
   const [email, setEmail] = useState<string>("");
   const [password, setPwd] = useState<string>("");
   const [checkEmail, setCheckEmail] = useState(true);
   const [checkPwd, setCheckPwd] = useState(true);
-  const handleLogIn = (email: string, password: string) => {
-    let regexEmail = new RegExp(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+  const handleLogIn = async (email: string, password: string) => {
+    // let regexEmail = new RegExp(
+    //   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    // );
 
-    if (email.length === 0) {
-      Alert.alert(
-        "Error",
-        "You have not entered your email yet. Please fill it in"
-      );
-      return false;
-    }
+    // if (email.length === 0) {
+    //   Alert.alert(
+    //     "Error",
+    //     "You have not entered your email yet. Please fill it in"
+    //   );
+    //   return false;
+    // }
 
-    if (!regexEmail.test(email)) {
-      // Alert.alert("Error", "Please enter an email address");
-      setCheckEmail(false);
-      return false;
-    } else {
-      setCheckEmail(true);
-    }
+    // if (!regexEmail.test(email)) {
+    //   // Alert.alert("Error", "Please enter an email address");
+    //   setCheckEmail(false);
+    //   return false;
+    // } else {
+    //   setCheckEmail(true);
+    // }
 
-    if (password.length === 0) {
-      Alert.alert(
-        "Error",
-        "You have not entered your email yet. Please fill it in"
-      );
-      return false;
-    }
-
-    if (password != "123") {
-      setCheckPwd(false);
-      return false;
-    } else {
-      setCheckPwd(true);
-    }
-    Alert.alert("Success", "Login successfully");
-    router.push("/screen/HomeScreen");
-    setPwd("");
+    // if (password.length === 0) {
+    //   Alert.alert(
+    //     "Error",
+    //     "You have not entered your email yet. Please fill it in"
+    //   );
+    //   return false;
+    // }
+    setCheckPwd(false)
+    login({ email, password });
     Keyboard.dismiss();
   };
 
