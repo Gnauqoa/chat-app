@@ -1,12 +1,12 @@
-import React, { ReactNode, createContext, useState } from "react";
+import React, { ReactNode, createContext, useEffect, useState } from "react";
 import { AxiosError } from "axios";
-import { PaginationResponseType, paginationInitialState } from "../api";
+import { PaginationStateType, paginationInitialState } from "../api";
 import { Room } from "../types/room";
 import useToggle from "../hooks/useToggle";
 import { getRoomsAPI } from "../api/room";
 
 export type RoomContextType = {
-  data: PaginationResponseType<Room>;
+  data: PaginationStateType<Room>;
   loading: boolean;
   error: string;
   onNewQuery: (query: string) => void;
@@ -22,9 +22,12 @@ export const RoomContext = createContext<RoomContextType>({
 });
 
 export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = useState<PaginationResponseType<Room>>(
+  const [data, setData] = useState<PaginationStateType<Room>>(
     paginationInitialState
   );
+  useEffect(() => {
+    console.log({ data });
+  }, [data]);
   const [query, setQuery] = useState<string>("");
   const [error, setError] = useState<string>("");
   const { toggle, onClose, onOpen } = useToggle();
@@ -33,7 +36,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
     setQuery(query);
     getRoomsAPI({ query, page: 1, per_page: 100 })
       .then((response) => {
-        setData(response.data);
+        setData(response.data.data);
       })
       .catch((error: AxiosError) => {
         setError(error.message);
@@ -45,11 +48,11 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
     getRoomsAPI({ query, page: data.page + 1, per_page: 100 })
       .then((response) => {
         setData((prev) => ({
-          items: [...prev.items, ...response.data.items],
-          page: response.data.page,
-          per_page: response.data.per_page,
-          total_items: response.data.total_items,
-          total_pages: response.data.total_pages,
+          items: [...prev.items, ...response.data.data.items],
+          page: response.data.data.page,
+          per_page: response.data.data.per_page,
+          total_items: response.data.data.total_items,
+          total_pages: response.data.data.total_pages,
         }));
       })
       .catch((error: AxiosError) => {

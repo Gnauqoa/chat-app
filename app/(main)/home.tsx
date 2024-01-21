@@ -8,43 +8,20 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import color from "../../container/color";
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import UserItem from "../../components/UserItem";
-import filter from "lodash.filter";
-
-const sampleData = [
-  { username: "john.doe@example.com", studentID: "123123" },
-  { username: "jane.smith@example.com", studentID: "121212" },
-  { username: "sam.jones@example.com", studentID: "323232" },
-  { username: "ledangquang@gmail.com", studentID: "21521338" },
-  { username: "nguyenthingocha@gmail.com", studentID: "21520217" },
-  { username: "truonghuutho@gmail.com", studentID: "21521479" },
-  // Thêm các mục dữ liệu khác nếu cần
-];
+import { RoomContext, RoomContextType } from "../../context/room";
 
 const HomeScreen = () => {
-  const [data, setData] =
-    useState<{ username: string; studentID: string }[]>(sampleData);
-  const [fullData, setFullData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [count, setCount] = useState(0);
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    const formattedQuery = query.toLowerCase();
-    const filteredData = filter(sampleData, (item) => {
-      const usernameLower = item.username.toLowerCase();
-      const emailLower = item.studentID.toLowerCase();
-      return (
-        usernameLower.includes(formattedQuery) ||
-        emailLower.includes(formattedQuery)
-      );
-    });
-    setData(filteredData);
-  };
-
+  const { data, onNewQuery, loading } = useContext(
+    RoomContext
+  ) as RoomContextType;
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  useEffect(() => {
+    onNewQuery("");
+  }, []);
   return (
     <ImageBackground
       style={{ height: "100%", width: "100%" }}
@@ -71,25 +48,27 @@ const HomeScreen = () => {
                 style={styles.input}
                 clearButtonMode="always"
                 value={searchQuery}
-                onChangeText={(query) => handleSearch(query)}
+                onChangeText={setSearchQuery}
               />
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => onNewQuery(searchQuery)}>
               <Image
                 source={require("../../assets/images/create.png")}
                 style={styles.iconLarge}
               />
             </TouchableOpacity>
           </View>
-          <View style={styles.bodyContainer}>
-            <FlatList
-              data={data}
-              keyExtractor={(item) => item.username}
-              renderItem={({ item }) => (
-                <UserItem username={item.username} studentID={item.studentID} />
-              )}
-            />
-          </View>
+          {loading ? (
+            <Text>Đang tải</Text>
+          ) : (
+            <View style={styles.bodyContainer}>
+              <FlatList
+                data={data.items}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => <UserItem {...item} />}
+              />
+            </View>
+          )}
         </View>
       </SafeAreaView>
     </ImageBackground>
