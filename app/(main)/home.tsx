@@ -11,7 +11,6 @@ import {
 import React, { useState } from "react";
 import color from "../../container/color";
 import { FlatList, TextInput } from "react-native-gesture-handler";
-import { router } from "expo-router";
 import UserItem from "../../components/UserItem";
 import filter from "lodash.filter";
 

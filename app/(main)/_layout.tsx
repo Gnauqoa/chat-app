@@ -4,7 +4,7 @@ import MainGuard from "../../guards/MainGuard";
 export default function AuthLayout() {
   return (
     <MainGuard>
-      <Tabs screenOptions={{}}>
+      <Tabs screenOptions={({ route }) => ({ headerShown: false })}>
         <Tabs.Screen name="home" />
       </Tabs>
     </MainGuard>
