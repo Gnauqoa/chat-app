@@ -5,13 +5,10 @@ import {
   ThemeProvider,
 } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { Link, SplashScreen, Stack, useRouter } from "expo-router";
-import { useContext, useEffect } from "react";
-import { TouchableOpacity, useColorScheme } from "react-native";
+import { SplashScreen, Stack } from "expo-router";
+import { useEffect } from "react";
+import { useColorScheme } from "react-native";
 import ContextProvider from "../context";
-import { AntDesign } from "@expo/vector-icons";
-import Colors from "../constants/Colors";
-import { AuthContext, AuthContextType } from "../context/authContext";
 
 export {
   // Catch any errors thrown by the Layout component.
