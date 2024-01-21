@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity,StyleSheet, Image, Alert, Keyboard, KeyboardAvoidingView, Platform } from 'react-native';
-import color from './../../container/color'
-import { router } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Image,
+  Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import color from "../../container/color";
+import { router } from "expo-router";
 
 interface LoginProps {
   // Add any props if needed
@@ -11,14 +21,18 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = (props) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPwd] = useState<string>("");
-  const [checkBox, setCheckBox] = useState(false);
-  const [checkEmail,setCheckEmail] = useState(true);
+  const [checkEmail, setCheckEmail] = useState(true);
   const [checkPwd, setCheckPwd] = useState(true);
   const handleLogIn = (email: string, password: string) => {
-    let regexEmail = new RegExp(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+    let regexEmail = new RegExp(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
 
     if (email.length === 0) {
-      Alert.alert("Error", "You have not entered your email yet. Please fill it in");
+      Alert.alert(
+        "Error",
+        "You have not entered your email yet. Please fill it in"
+      );
       return false;
     }
 
@@ -26,71 +40,77 @@ const Login: React.FC<LoginProps> = (props) => {
       // Alert.alert("Error", "Please enter an email address");
       setCheckEmail(false);
       return false;
+    } else {
+      setCheckEmail(true);
     }
-    else {setCheckEmail(true)}
 
     if (password.length === 0) {
-      Alert.alert("Error", "You have not entered your email yet. Please fill it in");
+      Alert.alert(
+        "Error",
+        "You have not entered your email yet. Please fill it in"
+      );
       return false;
     }
 
-    if (password != '123') {
+    if (password != "123") {
       setCheckPwd(false);
       return false;
+    } else {
+      setCheckPwd(true);
     }
-    else {setCheckPwd(true);}
     Alert.alert("Success", "Login successfully");
-    router.push("/screen/HomeScreen")
+    router.push("/screen/HomeScreen");
     setPwd("");
     Keyboard.dismiss();
-  }
+  };
 
   const handleForgotPwd = () => {
     Alert.alert("Forgot Password");
-  }
+  };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset = {40}
-      style={styles.container}>
-      
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={40}
+      style={styles.container}
+    >
       <View style={styles.loginContainer}>
-        <Image style={styles.logo} source={require('../../assets/images/logoweib.png')} />
-        <Text style={styles.title}>
-          Log in to Chatbox
-        </Text>
+        <Image
+          style={styles.logo}
+          source={require("../../assets/images/logoweib.png")}
+        />
+        <Text style={styles.title}>Log in to Chatbox</Text>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.text}>
-            Your email
-          </Text>
+          <Text style={styles.text}>Your email</Text>
           <View>
             <TextInput
-              autoCapitalize='none'
+              autoCapitalize="none"
               onChangeText={(email) => setEmail(email)}
               style={styles.input}
             />
-            <View style={{alignItems:'flex-end'}}>
-            <Text style={styles.errorText}>{!checkEmail ? 'Invalid email address' : ''}</Text>
+            <View style={{ alignItems: "flex-end" }}>
+              <Text style={styles.errorText}>
+                {!checkEmail ? "Invalid email address" : ""}
+              </Text>
             </View>
           </View>
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.text}>
-            Password
-          </Text>
+          <Text style={styles.text}>Password</Text>
           <View>
             <TextInput
-              autoCapitalize='none'
+              autoCapitalize="none"
               value={password}
               onChangeText={(password) => setPwd(password)}
               style={styles.input}
               secureTextEntry={true}
             />
-            <View style={{alignItems:'flex-end'}}>
-              <Text style={styles.errorText}>{!checkPwd ? 'Invalid password' : ''}</Text>
+            <View style={{ alignItems: "flex-end" }}>
+              <Text style={styles.errorText}>
+                {!checkPwd ? "Invalid password" : ""}
+              </Text>
             </View>
           </View>
         </View>
@@ -101,22 +121,18 @@ const Login: React.FC<LoginProps> = (props) => {
           onPress={() => handleLogIn(email, password)}
         >
           <View style={styles.button}>
-            <Text style={styles.textBtn}>
-              Log in
-            </Text>
+            <Text style={styles.textBtn}>Log in</Text>
           </View>
         </TouchableOpacity>
 
         <View style={styles.textBox}>
           <Text style={styles.smallText}>
-            Welcome back! Sign in using your social account or email to continue us
+            Welcome back! Sign in using your social account or email to continue
+            us
           </Text>
         </View>
 
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={handleForgotPwd}
-        >
+        <TouchableOpacity activeOpacity={0.7} onPress={handleForgotPwd}>
           <Text style={[styles.text, styles.marginTop40]}>
             Forgot password?
           </Text>
@@ -124,47 +140,47 @@ const Login: React.FC<LoginProps> = (props) => {
       </View>
     </KeyboardAvoidingView>
   );
-}
+};
 
-const styles =StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     backgroundColor: color.white,
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   logo: {
     width: 238,
     height: 145,
-    resizeMode: 'stretch',
+    resizeMode: "stretch",
   },
 
   loginContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   title: {
     marginTop: 24,
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: color.heading,
   },
-  
+
   inputContainer: {
-    marginTop: 10
+    marginTop: 10,
   },
 
   text: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
     color: color.heading,
   },
 
   errorText: {
-    color: 'red',
-    marginTop: 4
+    color: "red",
+    marginTop: 4,
   },
 
   input: {
@@ -179,40 +195,40 @@ const styles =StyleSheet.create({
     paddingVertical: 10,
     color: color.black,
   },
-  
+
   button: {
     width: 350,
     height: 48,
     backgroundColor: color.heading,
     borderRadius: 14,
     marginTop: 38,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   textBtn: {
     fontSize: 18,
     color: color.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 
   textBox: {
     marginTop: 30,
     width: 300,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
-  
+
   smallText: {
     fontSize: 14,
     color: color.note,
-    fontWeight: '300',
-    textAlign: 'center',
+    fontWeight: "300",
+    textAlign: "center",
   },
 
   marginTop40: {
     marginTop: 40,
-  }
-})
+  },
+});
 
 export default Login;
