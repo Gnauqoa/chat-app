@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAccessToken, getRefreshToken, saveTokens } from "../utils/auth";
 
-const serverUrl = "192.168.1.5";
+export const serverUrl = "192.168.1.5";
 
 const axiosForChatApp = axios.create({
   baseURL: `http://${serverUrl}:3000/api/v1`,
