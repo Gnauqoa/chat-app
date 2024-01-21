@@ -2,14 +2,17 @@ import { ReactNode } from "react";
 import { HistoryProvider } from "./history";
 import { ScreenOrientationProvider } from "./screenOrientation";
 import { AuthContextProvider } from "./authContext";
+import { RoomContextProvider } from "./room";
 
 const ContextProvider = ({ children }: { children: ReactNode }) => {
   return (
-    <ScreenOrientationProvider>
-      <AuthContextProvider>
-        <HistoryProvider>{children}</HistoryProvider>
-      </AuthContextProvider>
-    </ScreenOrientationProvider>
+    <RoomContextProvider>
+      <ScreenOrientationProvider>
+        <AuthContextProvider>
+          <HistoryProvider>{children}</HistoryProvider>
+        </AuthContextProvider>
+      </ScreenOrientationProvider>
+    </RoomContextProvider>
   );
 };
 
