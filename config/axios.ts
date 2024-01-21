@@ -3,7 +3,7 @@ import {
   getAccessToken,
   getRefreshToken,
   refreshAccessToken,
-} from "../api/auth";
+} from "../utils/auth";
 
 const axiosForChatApp = axios.create({
   baseURL: "localhost:3000",
