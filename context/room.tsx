@@ -1,4 +1,4 @@
-import React, { ReactNode, createContext, useEffect, useState } from "react";
+import React, { ReactNode, createContext, useState } from "react";
 import { AxiosError } from "axios";
 import { PaginationStateType, paginationInitialState } from "../api";
 import { Room } from "../types/room";
@@ -25,9 +25,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<PaginationStateType<Room>>(
     paginationInitialState
   );
-  useEffect(() => {
-    console.log({ data });
-  }, [data]);
+
   const [query, setQuery] = useState<string>("");
   const [error, setError] = useState<string>("");
   const { toggle, onClose, onOpen } = useToggle();
