@@ -20,5 +20,5 @@ export function loginAPI(
   email: string,
   password: string
 ): Promise<AxiosResponse<LoginResponseType>> {
-  return axiosForChatApp.post("/users/signIn", { email, password });
+  return axiosForChatApp.post("/users/signIn", { username: email, password });
 }

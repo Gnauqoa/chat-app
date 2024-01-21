@@ -27,7 +27,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     email: string;
     password: string;
   }) => {
-    console.log("login");
     loginAPI(email, password)
       .then(async (res) => {
         if (res.status === 200) {
@@ -42,7 +41,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
       })
       .catch((err) => {
         const error = err as AxiosError;
-        console.log(error.toJSON())
+        console.log(error.toJSON());
       });
   };
   const logout = async () => {
