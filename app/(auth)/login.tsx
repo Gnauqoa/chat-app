@@ -1,5 +1,4 @@
-import { View } from "react-native";
-import Login from "../../section/login/LoginScreen";
+import Login from "../../section/login";
 
 const LoginScreen = () => {
   return <Login />;
