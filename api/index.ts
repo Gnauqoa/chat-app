@@ -7,6 +7,9 @@ export type PaginationResponseType<T> = {
     items: T[];
   };
 };
+export type DataResponseType<T> = {
+  data: T;
+};
 export type PaginationStateType<T> = {
   items: T[];
   total_items: number;
