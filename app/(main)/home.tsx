@@ -5,10 +5,8 @@ import {
   SafeAreaView,
   ImageBackground,
   StatusBar,
-  Linking,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import color from "../../container/color";
@@ -77,9 +75,7 @@ const HomeScreen = () => {
                 onChangeText={(query) => handleSearch(query)}
               />
             </View>
-            <TouchableOpacity
-              onPress={() => router.push("/screen/CreateScreen")}
-            >
+            <TouchableOpacity>
               <Image
                 source={require("../../assets/images/create.png")}
                 style={styles.iconLarge}
@@ -121,6 +117,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.black,
     // opacity: 0.4,
     width: "80%",
+    alignItems: "center",
     flexDirection: "row",
     borderRadius: 40,
     paddingVertical: 12,
