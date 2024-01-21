@@ -5,7 +5,7 @@ export default function AuthLayout() {
   return (
     <MainGuard>
       <Tabs screenOptions={{}}>
-        <Tabs.Screen name="login" />
+        <Tabs.Screen name="home" />
       </Tabs>
     </MainGuard>
   );
