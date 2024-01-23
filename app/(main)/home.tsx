@@ -29,7 +29,6 @@ const HomeScreen = () => {
           source={require("../../assets/images/Home.png")}
           resizeMode="stretch"
         >
-      
         <StatusBar
         translucent
         barStyle={"light-content"}
@@ -50,10 +49,15 @@ const HomeScreen = () => {
                 value={searchQuery}
                 onChangeText={setSearchQuery}
               />
+              <TouchableOpacity onPress={() => onNewQuery(searchQuery)}>
+                <Text style={styles.txtSearch}>
+                  {searchQuery.length>0 ? "Search" : ""}
+                </Text>
+              </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => onNewQuery(searchQuery)}>
+            <TouchableOpacity >
               <Image
-                source={require("../../assets/images/create.png")}
+                source={require("../../assets/images/plusIcon.png")}
                 style={styles.iconLarge}
               />
             </TouchableOpacity>
@@ -105,7 +109,7 @@ const styles = StyleSheet.create({
 
   input: {
     color: color.white,
-    width: "80%",
+    width: "70%",
     marginLeft: 12,
   },
 
@@ -115,8 +119,8 @@ const styles = StyleSheet.create({
   },
 
   iconLarge: {
-    width: 30,
-    height: 30,
+    width: 50,
+    height: 50,
   },
 
   bodyContainer: {
@@ -161,6 +165,12 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: color.note,
   },
+
+  txtSearch: {
+    color: color.white,
+    fontWeight: 'bold',
+    lineHeight: 29,
+  }
 });
 
 export default HomeScreen;
