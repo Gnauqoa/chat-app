@@ -23,17 +23,17 @@ const HomeScreen = () => {
     onNewQuery("");
   }, []);
   return (
-    <ImageBackground
-      style={{ height: "100%", width: "100%" }}
-      source={require("../../assets/images/Home.png")}
-      resizeMode="stretch"
-    >
-      <StatusBar
+    <SafeAreaView style={{ flex: 1 }}>
+        <ImageBackground
+          style={{ height: "100%", width: "100%" }}
+          source={require("../../assets/images/Home.png")}
+          resizeMode="stretch"
+        >
+      
+        <StatusBar
         translucent
-        backgroundColor={"black"}
-        barStyle={"dark-content"}
-      />
-      <SafeAreaView style={{ flex: 1 }}>
+        barStyle={"light-content"}
+        />
         <View style={styles.container}>
           <View style={styles.topContainer}>
             <View style={styles.inputFind}>
@@ -70,8 +70,9 @@ const HomeScreen = () => {
             </View>
           )}
         </View>
-      </SafeAreaView>
-    </ImageBackground>
+
+       </ImageBackground>
+    </SafeAreaView>
   );
 };
 
