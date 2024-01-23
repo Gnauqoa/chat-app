@@ -1,8 +1,16 @@
+import { useLocalSearchParams } from "expo-router";
 import { useRef } from "react";
 import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import useMessages from "../../hooks/useMessages";
+import useAuth from "../../hooks/useAuth";
+import Message from "../../components/Message";
+import UserReceived from "../../components/UserReceived";
 
 const Main = () => {
+  const { user } = useAuth();
   const scrollViewRef = useRef<ScrollView>(null);
+  const { roomId } = useLocalSearchParams();
+  const { data } = useMessages({ roomId: roomId as string });
   return (
     <ScrollView
       ref={scrollViewRef}
@@ -10,7 +18,17 @@ const Main = () => {
       contentContainerStyle={styles.scrollContent}
     >
       <View style={styles.body}>
-        {/* <FlatList keyExtractor={(item) => item.id} /> */}
+        <FlatList
+          data={data.items}
+          keyExtractor={(item) => `message ${item.id}`}
+          renderItem={({ item }) =>
+            item.userId === user?.id ? (
+              <Message key={`message ${item.id}`} {...item} />
+            ) : (
+              <UserReceived key={`message ${item.id}`} {...item} />
+            )
+          }
+        />
       </View>
     </ScrollView>
   );

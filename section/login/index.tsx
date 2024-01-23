@@ -12,7 +12,6 @@ import {
   Platform,
 } from "react-native";
 import color from "../../container/color";
-import { router } from "expo-router";
 import useAuth from "../../hooks/useAuth";
 
 interface LoginProps {

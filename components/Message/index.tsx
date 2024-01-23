@@ -1,47 +1,32 @@
-import { View, Text } from 'react-native'
-import React, { useState } from 'react'
-import { LinearGradient } from 'expo-linear-gradient';
-import styles from './style'
-import color from '../../container/color';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text } from "react-native";
+import React, { useState } from "react";
+import { LinearGradient } from "expo-linear-gradient";
+import styles from "./style";
+import color from "../../container/color";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Message as MessageType } from "../../types/message";
+import dayjs from "dayjs";
 
-interface MessageProps {
-    key: number,
-    content: string,
-    number: number,
-    onDeleteMess: (index: number) => void;
-    onShowTime: (index: number) => void;
-    time: string,
-  }
-
-const Message: React.FC<MessageProps> = (props) => {
+const Message = ({ message, createdAt }: MessageType) => {
   // const currentTimeString: string = new Date().toLocaleTimeString();
 
-  const [showTime,setShowTime] = useState(false);
-  
-  const [time,setTime] = useState('');
-  const handleShowTime = () => {
-    props.onShowTime(1);
-    console.log(props.time);
-    setShowTime(!showTime)
-  }
-
-  const handleDeleteMess = () => {
-    props.onDeleteMess(1);
-  }
+  const [showTime, setShowTime] = useState(false);
 
   return (
-    <TouchableOpacity onLongPress={handleDeleteMess} onPress={handleShowTime} style={styles.sendContainer}>
-      <LinearGradient 
-          colors={[color.gradient1,color.gradient2]}
-          start={{x:0.5, y:0.5}}
-          style={styles.wrapMess}
+    <TouchableOpacity
+      onLongPress={() => setShowTime(true)}
+      style={styles.sendContainer}
+    >
+      <LinearGradient
+        colors={[color.gradient1, color.gradient2]}
+        start={{ x: 0.5, y: 0.5 }}
+        style={styles.wrapMess}
       >
-          <Text style={styles.userMessage}>{props.content}</Text>
+        <Text style={styles.userMessage}>{message}</Text>
       </LinearGradient>
-      {showTime && <Text style={styles.time}>{props.time}</Text>}
-    </TouchableOpacity>     
-  )
-}
+      {showTime && <Text style={styles.time}>{dayjs(createdAt).format("HH:mm") }</Text>}
+    </TouchableOpacity>
+  );
+};
 
-export default Message
+export default Message;
