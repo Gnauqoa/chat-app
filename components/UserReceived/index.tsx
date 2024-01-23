@@ -99,14 +99,15 @@ const styles = StyleSheet.create({
     letterSpacing: 0.12,
   },
   timestamp: {
-    width: 54,
+    
+    width: 'auto',
     textAlign: "center",
     color: "rgba(121, 124, 123, 0.50)",
     fontSize: 10,
     fontFamily: "Poppins",
     fontWeight: "500",
     lineHeight: 10,
-    marginLeft: 40,
+    marginLeft: 50,
   },
 });
 
