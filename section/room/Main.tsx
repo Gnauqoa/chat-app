@@ -19,6 +19,11 @@ const Main = () => {
     >
       <View style={styles.body}>
         <FlatList
+          contentContainerStyle={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column-reverse",
+          }}
           data={data.items}
           keyExtractor={(item) => `message ${item.id}`}
           renderItem={({ item }) =>
