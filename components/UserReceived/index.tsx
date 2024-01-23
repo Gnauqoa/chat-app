@@ -3,12 +3,11 @@ import React, { useState } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Message } from "../../types/message";
+import useToggle from "../../hooks/useToggle";
 
 const UserReceived = ({ message, createdAt }: Message) => {
-  const [showTime, setShowTime] = useState(false);
-  const handleShowTime = () => {
-    setShowTime(!showTime);
-  };
+  const { toggle, onToggle } = useToggle(false);
+
   return (
     <View style={styles.container}>
       <View style={styles.outerContainer}>
@@ -20,15 +19,19 @@ const UserReceived = ({ message, createdAt }: Message) => {
         </View>
         <View style={styles.messageContainer}>
           <Text style={styles.personName}>Person name</Text>
-          <TouchableOpacity onPress={handleShowTime}>
+          <TouchableOpacity onPress={onToggle}>
             <View style={styles.messageBubble}>
               <Text style={styles.messageText}>{message}</Text>
             </View>
           </TouchableOpacity>
         </View>
       </View>
-      {showTime && (
-        <Text style={styles.timestamp}>{dayjs(createdAt).format("mm:ss")}</Text>
+      {toggle && (
+        <Text style={styles.timestamp}>
+          {dayjs(createdAt).isSame(dayjs(), "day")
+            ? dayjs(createdAt).format("mm:ss")
+            : dayjs(createdAt).format("DD MMM YYYY")}
+        </Text>
       )}
     </View>
   );

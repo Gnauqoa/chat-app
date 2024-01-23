@@ -3,15 +3,6 @@ import { PaginationParamsType, PaginationResponseType } from ".";
 import { Message } from "../types/message";
 import axiosForChatApp from "../config/axios";
 
-export const getMessages = async ({
-  roomId,
-  ...params
-}: PaginationParamsType & {
-  roomId: number;
-}): Promise<AxiosResponse<PaginationResponseType<Message>>> => {
-  return axiosForChatApp.get(`/rooms/${roomId}/messages`, { params });
-};
-
 export const createMessage = async ({
   roomId,
   message,
