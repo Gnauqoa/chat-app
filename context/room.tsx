@@ -5,6 +5,8 @@ import { Room } from "../types/room";
 import useToggle from "../hooks/useToggle";
 import { getRoomsAPI, updateRoomAPI } from "../api/room";
 
+const perPage = 100;
+
 export type RoomContextType = {
   data: PaginationStateType<Room>;
   loading: boolean;
@@ -12,6 +14,7 @@ export type RoomContextType = {
   onNewQuery: (query: string) => void;
   onLoadMore: () => void;
   onUpdate: (roomId: number | string, updateData: { name: string }) => void;
+  onReload: () => void;
 };
 
 export const RoomContext = createContext<RoomContextType>({
@@ -21,6 +24,7 @@ export const RoomContext = createContext<RoomContextType>({
   onNewQuery: () => {},
   onLoadMore: () => {},
   onUpdate: () => {},
+  onReload: () => {},
 });
 
 export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
@@ -31,6 +35,8 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
   const [query, setQuery] = useState<string>("");
   const [error, setError] = useState<string>("");
   const { toggle, onClose, onOpen } = useToggle();
+
+  const handleReload = () => handleQuery(query);
   const handleUpdate = (
     roomId: number | string,
     updateData: { name: string }
@@ -53,7 +59,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
   const handleQuery = (query: string) => {
     onOpen();
     setQuery(query);
-    getRoomsAPI({ query, page: 1, per_page: 100 })
+    getRoomsAPI({ query, page: 1, per_page: perPage })
       .then((response) => {
         setData(response.data.data);
       })
@@ -65,7 +71,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
 
   const handleLoadMore = () => {
     onOpen();
-    getRoomsAPI({ query, page: data.page + 1, per_page: 100 })
+    getRoomsAPI({ query, page: data.page + 1, per_page: perPage })
       .then((response) => {
         setData((prev) => ({
           items: [...prev.items, ...response.data.data.items],
@@ -83,6 +89,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
   return (
     <RoomContext.Provider
       value={{
+        onReload: handleReload,
         data,
         loading: toggle,
         error,

@@ -7,6 +7,8 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
+  RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import color from "../../container/color";
@@ -15,24 +17,22 @@ import UserItem from "../../components/UserItem";
 import { RoomContext, RoomContextType } from "../../context/room";
 
 const HomeScreen = () => {
-  const { data, onNewQuery, loading } = useContext(
+  const { data, onNewQuery, loading, onReload } = useContext(
     RoomContext
   ) as RoomContextType;
+
   const [searchQuery, setSearchQuery] = useState<string>("");
   useEffect(() => {
     onNewQuery("");
   }, []);
   return (
     <SafeAreaView style={{ flex: 1 }}>
-        <ImageBackground
-          style={{ height: "100%", width: "100%" }}
-          source={require("../../assets/images/Home.png")}
-          resizeMode="stretch"
-        >
-        <StatusBar
-        translucent
-        barStyle={"light-content"}
-        />
+      <ImageBackground
+        style={{ height: "100%", width: "100%" }}
+        source={require("../../assets/images/Home.png")}
+        resizeMode="stretch"
+      >
+        <StatusBar translucent barStyle={"light-content"} />
         <View style={styles.container}>
           <View style={styles.topContainer}>
             <View style={styles.inputFind}>
@@ -51,31 +51,33 @@ const HomeScreen = () => {
               />
               <TouchableOpacity onPress={() => onNewQuery(searchQuery)}>
                 <Text style={styles.txtSearch}>
-                  {searchQuery.length>0 ? "Search" : ""}
+                  {searchQuery.length > 0 ? "Search" : ""}
                 </Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity >
+            <TouchableOpacity>
               <Image
                 source={require("../../assets/images/plusIcon.png")}
                 style={styles.iconLarge}
               />
             </TouchableOpacity>
           </View>
-          {loading ? (
-            <Text>Đang tải</Text>
-          ) : (
-            <View style={styles.bodyContainer}>
+          <View style={styles.bodyContainer}>
+            {loading ? (
+              <ActivityIndicator size="large" />
+            ) : (
               <FlatList
+                refreshControl={
+                  <RefreshControl refreshing={loading} onRefresh={onReload} />
+                }
                 data={data.items}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => <UserItem {...item} />}
               />
-            </View>
-          )}
+            )}
+          </View>
         </View>
-
-       </ImageBackground>
+      </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -168,9 +170,9 @@ const styles = StyleSheet.create({
 
   txtSearch: {
     color: color.white,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     lineHeight: 29,
-  }
+  },
 });
 
 export default HomeScreen;
