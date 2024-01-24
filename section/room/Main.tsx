@@ -1,5 +1,4 @@
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useRef } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import useMessages from "../../hooks/useMessages";
 import useAuth from "../../hooks/useAuth";
@@ -10,7 +9,6 @@ import { faArrowCircleDown } from "@fortawesome/free-solid-svg-icons";
 
 const Main = () => {
   const { user } = useAuth();
-  const scrollViewRef = useRef<FlatList>(null);
   const { roomId } = useLocalSearchParams();
   const {
     data,
@@ -19,9 +17,6 @@ const Main = () => {
   } = useMessages({
     roomId: roomId as string,
   });
-  useEffect(() => {
-    console.log({ loading });
-  }, [loading]);
 
   return (
     <View style={styles.body}>
