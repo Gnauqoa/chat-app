@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 import useMessages from "../../hooks/useMessages";
 import useAuth from "../../hooks/useAuth";
@@ -8,34 +8,32 @@ import UserReceived from "../../components/UserReceived";
 
 const Main = () => {
   const { user } = useAuth();
-  const scrollViewRef = useRef<ScrollView>(null);
+  const scrollViewRef = useRef<FlatList>(null);
   const { roomId } = useLocalSearchParams();
   const { data } = useMessages({ roomId: roomId as string });
+  useEffect(() => {
+    // if (data.items.length > 0)
+    // scrollViewRef.current?.scrollToEnd({ animated: true });
+  }, [data.items]);
   return (
-    <ScrollView
-      ref={scrollViewRef}
-      style={styles.scrollView}
-      contentContainerStyle={styles.scrollContent}
-    >
-      <View style={styles.body}>
-        <FlatList
-          contentContainerStyle={{
-            flex: 1,
-            display: "flex",
-            flexDirection: "column-reverse",
-          }}
-          data={data.items}
-          keyExtractor={(item) => `message ${item.id}`}
-          renderItem={({ item }) =>
-            item.userId === user?.id ? (
-              <Message key={`message ${item.id}`} {...item} />
-            ) : (
-              <UserReceived key={`message ${item.id}`} {...item} />
-            )
-          }
-        />
-      </View>
-    </ScrollView>
+    <View style={styles.body}>
+      <FlatList
+        // ref={scrollViewRef}
+        inverted
+        contentContainerStyle={{
+          display: "flex",
+        }}
+        data={data.items}
+        keyExtractor={(item) => `message ${item.id}`}
+        renderItem={({ item }) =>
+          item.userId === user?.id ? (
+            <Message key={`message ${item.id}`} {...item} />
+          ) : (
+            <UserReceived key={`message ${item.id}`} {...item} />
+          )
+        }
+      />
+    </View>
   );
 };
 
