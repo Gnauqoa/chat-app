@@ -1,18 +1,27 @@
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Image, Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import color from "../../container/color";
 import { StatusBar } from "expo-status-bar";
 import { TextInput } from "react-native-gesture-handler";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { RoomContext, RoomContextType } from "../../context/room";
 
 const Header = () => {
   const [editing, setEditing] = useState(false);
   const [roomName, setRoomName] = useState("Person name 1");
   const router = useRouter();
-
+  const { data } = useContext(RoomContext) as RoomContextType;
+  const { roomId } = useLocalSearchParams();
+  useEffect(() => {
+    const index = data.items.findIndex(
+      (item) => item.id.toString() === roomId.toString()
+    );
+    if (index === -1) return;
+    setRoomName(data.items[index].name);
+  }, [roomId]);
   const handleEditPress = () => {
     setEditing(true);
   };
