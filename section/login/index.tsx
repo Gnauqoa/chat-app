@@ -55,7 +55,6 @@ const Login: React.FC<LoginProps> = (props) => {
     //   return false;
     // }
     login({ email, password });
-    console.log(auth);
     if (auth) {
       setCheckPwd(false);
     }
