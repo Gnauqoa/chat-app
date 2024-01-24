@@ -1,5 +1,9 @@
 import { AxiosResponse } from "axios";
-import { PaginationParamsType, PaginationResponseType } from ".";
+import {
+  DataResponseType,
+  PaginationParamsType,
+  PaginationResponseType,
+} from ".";
 import { Room } from "../types/room";
 import axiosForChatApp from "../config/axios";
 import { Message } from "../types/message";
@@ -19,4 +23,14 @@ export const getMessagesAPI = async ({
   roomId: number | string;
 }): Promise<AxiosResponse<PaginationResponseType<Message>>> => {
   return axiosForChatApp.get(`/rooms/${roomId}/messages`, { params });
+};
+
+export const updateRoomAPI = async ({
+  roomId,
+  data,
+}: {
+  roomId: string | number;
+  data: { name: string };
+}): Promise<AxiosResponse<DataResponseType<Room>>> => {
+  return axiosForChatApp.put(`/rooms/${roomId}`, data);
 };
