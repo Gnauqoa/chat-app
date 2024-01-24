@@ -1,23 +1,31 @@
 import { useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useRef } from "react";
-import { FlatList, ScrollView, StyleSheet, View } from "react-native";
+import { useEffect, useRef } from "react";
+import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import useMessages from "../../hooks/useMessages";
 import useAuth from "../../hooks/useAuth";
 import Message from "../../components/Message";
 import UserReceived from "../../components/UserReceived";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faArrowCircleDown } from "@fortawesome/free-solid-svg-icons";
 
 const Main = () => {
   const { user } = useAuth();
   const scrollViewRef = useRef<FlatList>(null);
   const { roomId } = useLocalSearchParams();
-  const { data, handleLoadMore: loadMessages } = useMessages({
+  const {
+    data,
+    handleLoadMore: loadMessages,
+    loading,
+  } = useMessages({
     roomId: roomId as string,
   });
-  const thresouldVal = data.items.slice(-5);
-  const reachIds = thresouldVal.map((val) => val.id);
+  useEffect(() => {
+    console.log({ loading });
+  }, [loading]);
 
   return (
     <View style={styles.body}>
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
       <FlatList
         // ref={scrollViewRef}
         inverted
@@ -35,6 +43,14 @@ const Main = () => {
           )
         }
       />
+      <View>
+        <FontAwesomeIcon
+          icon={faArrowCircleDown}
+          color="black"
+          size={40}
+          style={styles.scrollDownIcon}
+        />
+      </View>
     </View>
   );
 };
@@ -73,5 +89,13 @@ const styles = StyleSheet.create({
   messContainer: {
     width: "70%",
     flexDirection: "column",
+  },
+
+  scrollDownIcon: {
+    position: "absolute",
+    alignSelf: "flex-end",
+    bottom: 10,
+    right: 10,
+    // backgroundColor: 'red',
   },
 });
