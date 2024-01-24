@@ -5,6 +5,9 @@ import useMessages from "../../hooks/useMessages";
 import useAuth from "../../hooks/useAuth";
 import Message from "../../components/Message";
 import UserReceived from "../../components/UserReceived";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowCircleDown } from '@fortawesome/free-solid-svg-icons';
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const Main = () => {
   const { user } = useAuth();
@@ -35,6 +38,9 @@ const Main = () => {
           )
         }
       />
+      <View>
+          <FontAwesomeIcon icon={faArrowCircleDown} color='black' size={40} style={styles.scrollDownIcon}/>
+      </View>
     </View>
   );
 };
@@ -74,4 +80,13 @@ const styles = StyleSheet.create({
     width: "70%",
     flexDirection: "column",
   },
+
+  scrollDownIcon: {
+    position: 'absolute',
+    alignSelf: 'flex-end',
+    bottom: 10,
+    right: 10,
+    // backgroundColor: 'red',
+  },
+
 });

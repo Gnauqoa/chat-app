@@ -3,9 +3,26 @@ import { Image, Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import color from "../../container/color";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { TextInput } from "react-native-gesture-handler";
+import { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
+  const [editing,setEditing] = useState(false);
+  const [roomName, setRoomName] = useState('Person name 1');
   const router = useRouter();
+
+  const handleEditPress = () => {
+    setEditing(true);
+  };
+  const handleCancelPress = () => {
+    setEditing(false);
+  };
+  const handleSavePress = () => {
+    setEditing(false);
+  };
   return (
     <SafeAreaView >
         <View style={styles.topContainer}>
@@ -26,25 +43,52 @@ const Header = () => {
                 style={styles.avatar}
               />
               <View style={styles.nameContainer}>
-                <Text style={styles.name}>Person name 1</Text>
+                {editing ? (
+                  <TextInput 
+                    style={styles.name}
+                    value={roomName}
+                    onChangeText={(text) => setRoomName(text)}
+                    onBlur={handleSavePress}
+                  >
+                </TextInput>
+                ) : (
+                  <TouchableOpacity onPress={handleEditPress}>
+                    <Text style={styles.name}>{roomName}</Text>
+                  </TouchableOpacity>
+                )}
+                
                 <Text style={styles.status}>Active now</Text>
               </View>
             </View>
           </View>
 
           <View style={styles.rightTopContainer}>
-            <TouchableOpacity>
-              <Image
-                style={styles.iconPhone}
-                source={require("../../assets/images/phone.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image
-                style={styles.iconCamera}
-                source={require("../../assets/images/camera.png")}
-              />
-            </TouchableOpacity>
+            {editing ? (
+              <TouchableOpacity onPress={handleCancelPress}>
+                <FontAwesomeIcon icon={faX} color='black' size={18} style={styles.iconPhone}/>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity>
+                <Image
+                  style={styles.iconPhone}
+                  source={require("../../assets/images/phone.png")}
+                />
+              </TouchableOpacity>
+            )}
+
+              {editing ? (
+                <TouchableOpacity onPress={handleSavePress}>
+                  <FontAwesomeIcon icon={faCheck} color='black' size={18} style={styles.iconCamera}/> 
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity>
+                  <Image
+                    style={styles.iconCamera}
+                    source={require("../../assets/images/camera.png")}
+                  />
+              </TouchableOpacity>
+              )}
+
           </View>
         </View>
     </SafeAreaView>
