@@ -1,11 +1,13 @@
 import { useRouter } from "expo-router";
 import { Image, Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import color from "../../container/color";
+import { StatusBar } from "expo-status-bar";
 
 const Header = () => {
   const router = useRouter();
   return (
     <View style={styles.topContainer}>
+      <StatusBar translucent />
       <View style={styles.leftTopContainer}>
         <TouchableOpacity onPress={router.back}>
           <View style={styles.wrapBackBtn}>

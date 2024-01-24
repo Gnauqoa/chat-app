@@ -9,6 +9,8 @@ import useToggle from "./useToggle";
 import { getMessagesAPI } from "../api/room";
 import { socket } from "../config/socket.io";
 
+const perPage = 15
+
 const useMessages = ({ roomId }: { roomId: string }) => {
   const [data, setData] = useState<PaginationStateType<Message>>(
     paginationInitialState
@@ -18,7 +20,7 @@ const useMessages = ({ roomId }: { roomId: string }) => {
   const handleLoadMore = () => {
     if (data.page < data.total_pages) {
       onOpen();
-      getMessagesAPI({ roomId, per_page: 10, page: data.page + 1 })
+      getMessagesAPI({ roomId, per_page: perPage, page: data.page + 1 })
         .then((res) => {
           setData((prevState) => ({
             ...res.data.data,
@@ -33,7 +35,7 @@ const useMessages = ({ roomId }: { roomId: string }) => {
   };
   useEffect(() => {
     onOpen();
-    getMessagesAPI({ roomId, per_page: 10 })
+    getMessagesAPI({ roomId, per_page: perPage })
       .then((res) => {
         setData(res.data.data);
       })
