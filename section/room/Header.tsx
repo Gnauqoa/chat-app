@@ -13,23 +13,23 @@ const Header = () => {
   const [editing, setEditing] = useState(false);
   const [roomName, setRoomName] = useState("Person name 1");
   const router = useRouter();
-  const { data } = useContext(RoomContext) as RoomContextType;
+  const { data, onUpdate } = useContext(RoomContext) as RoomContextType;
   const { roomId } = useLocalSearchParams();
+  const index = data.items.findIndex(
+    (item) => item.id.toString() === roomId.toString()
+  );
   useEffect(() => {
-    const index = data.items.findIndex(
-      (item) => item.id.toString() === roomId.toString()
-    );
     if (index === -1) return;
     setRoomName(data.items[index].name);
   }, [roomId]);
-  const handleEditPress = () => {
-    setEditing(true);
-  };
+
   const handleCancelPress = () => {
+    setRoomName(data.items[index].name);
     setEditing(false);
   };
   const handleSavePress = () => {
     setEditing(false);
+    onUpdate(roomId.toString(), { name: roomName });
   };
   return (
     <View style={styles.topContainer}>
@@ -58,7 +58,7 @@ const Header = () => {
                 onBlur={handleSavePress}
               ></TextInput>
             ) : (
-              <TouchableOpacity onPress={handleEditPress}>
+              <TouchableOpacity onPress={() => setEditing(true)}>
                 <Text style={styles.name}>{roomName}</Text>
               </TouchableOpacity>
             )}
