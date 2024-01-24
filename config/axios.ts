@@ -4,7 +4,7 @@ import { getAccessToken, getRefreshToken, saveTokens } from "../utils/auth";
 export const serverUrl = "192.168.137.1";
 
 const axiosForChatApp = axios.create({
-  baseURL: `http://${serverUrl}:3000/api/v1`,
+  baseURL: `${serverUrl}/api/v1`,
   timeout: 10000, // Timeout in milliseconds
   headers: {
     "Content-Type": "application/json",
