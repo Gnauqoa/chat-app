@@ -11,9 +11,10 @@ import useAuth from "../../hooks/useAuth";
 import Message from "../../components/Message";
 import UserReceived from "../../components/UserReceived";
 import { AntDesign } from "@expo/vector-icons";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const Main = () => {
+  const [contentOffset, setContentOffset] = useState(0);
   const { user } = useAuth();
   const { roomId } = useLocalSearchParams();
   const {
@@ -28,6 +29,9 @@ const Main = () => {
     <View style={styles.body}>
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
       <FlatList
+        onScroll={(event) =>
+          setContentOffset(event.nativeEvent.contentOffset.y)
+        }
         ref={scrollViewRef}
         inverted
         contentContainerStyle={{
@@ -44,25 +48,27 @@ const Main = () => {
           )
         }
       />
-      <TouchableOpacity
-        onPress={() =>
-          scrollViewRef.current?.scrollToIndex({ index: 0, animated: true })
-        }
-        style={{
-          backgroundColor: "#000",
-          position: "absolute",
-          justifyContent: "center",
-          alignItems: "center",
-          alignSelf: "flex-end",
-          width: 36,
-          height: 36,
-          borderRadius: 999,
-          bottom: 10,
-          right: 20,
-        }}
-      >
-        <AntDesign name="arrowdown" color="white" size={24} />
-      </TouchableOpacity>
+      {contentOffset > 100 && (
+        <TouchableOpacity
+          onPress={() =>
+            scrollViewRef.current?.scrollToIndex({ index: 0, animated: true })
+          }
+          style={{
+            backgroundColor: "#000",
+            position: "absolute",
+            justifyContent: "center",
+            alignItems: "center",
+            alignSelf: "flex-end",
+            width: 36,
+            height: 36,
+            borderRadius: 999,
+            bottom: 10,
+            right: 20,
+          }}
+        >
+          <AntDesign name="arrowdown" color="white" size={24} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
