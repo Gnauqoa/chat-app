@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import color from "../../container/color";
 import useAuth from "../../hooks/useAuth";
+import { AuthContext } from '../../context/authContext';
 
 interface LoginProps {
   // Add any props if needed
@@ -20,6 +21,7 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = (props) => {
   const { login } = useAuth();
+  const { auth } = useContext(AuthContext);
   const [email, setEmail] = useState<string>("");
   const [password, setPwd] = useState<string>("");
   const [checkEmail, setCheckEmail] = useState(true);
@@ -52,8 +54,14 @@ const Login: React.FC<LoginProps> = (props) => {
     //   );
     //   return false;
     // }
-    setCheckPwd(false)
     login({ email, password });
+    console.log(auth);
+    if (auth) {
+      setCheckPwd(false);
+    }
+    else {
+      setCheckPwd(true);
+    }
     Keyboard.dismiss();
   };
 
