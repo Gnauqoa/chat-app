@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
-import io from "socket.io-client";
-import { serverUrl } from "../config/axios";
 import { Message } from "../types/message";
-import { PaginationStateType, paginationInitialState } from "../api";
+import {
+  DataResponseType,
+  PaginationStateType,
+  paginationInitialState,
+} from "../api";
 import useToggle from "./useToggle";
 import { getMessagesAPI } from "../api/room";
+import { socket } from "../config/socket.io";
 
 const useMessages = ({ roomId }: { roomId: string }) => {
   const [data, setData] = useState<PaginationStateType<Message>>(
@@ -32,7 +35,6 @@ const useMessages = ({ roomId }: { roomId: string }) => {
     onOpen();
     getMessagesAPI({ roomId, per_page: 80 })
       .then((res) => {
-        console.log(res.data.data);
         setData(res.data.data);
       })
       .catch((err) => {
@@ -40,22 +42,34 @@ const useMessages = ({ roomId }: { roomId: string }) => {
       })
       .finally(onClose);
   }, [roomId]);
-  useEffect(() => {
-    const socket = io(serverUrl);
 
-    socket.on("connect", () => {
-      socket.emit(`joinRoom`, { roomId: roomId });
-    });
-    socket.on("message", (message: Message) => {
+  useEffect(() => {
+    socket.connect();
+    function onNewMessage(newMessage: DataResponseType<Message>) {
       setData((prevState) => ({
         ...prevState,
-        items: [...prevState.items, message],
+        items: [newMessage.data, ...prevState.items],
       }));
-    });
+    }
+    function onConnect() {
+      console.log("connected");
+    }
+    function onDisconnect() {
+      console.log("disconnected");
+    }
+
+    socket.emit(`joinRoom`, { roomId: roomId });
+    socket.on("newMessage", onNewMessage);
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
     return () => {
       socket.disconnect();
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("newMessage", onNewMessage);
     };
-  }, [roomId]);
+  }, []);
+
   return { data, error, loading: toggle, handleLoadMore };
 };
 
