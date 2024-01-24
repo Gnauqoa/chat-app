@@ -51,12 +51,13 @@ const Header = () => {
           />
           <View style={styles.nameContainer}>
             {editing ? (
-              <TextInput
-                style={styles.name}
-                value={roomName}
-                onChangeText={(text) => setRoomName(text)}
-                onBlur={handleSavePress}
-              ></TextInput>
+              <View style={styles.nameEdit}>
+                <TextInput
+                  value={roomName}
+                  onChangeText={(text) => setRoomName(text)}
+                  onBlur={handleSavePress}
+                ></TextInput>
+              </View>
             ) : (
               <TouchableOpacity onPress={() => setEditing(true)}>
                 <Text style={styles.name}>{roomName}</Text>
@@ -147,12 +148,20 @@ const styles = StyleSheet.create({
 
   nameContainer: {},
 
+  nameEdit: {
+    color: color.black,
+    fontWeight: "bold",
+    fontSize: 18,
+    borderWidth: 1,
+    borderColor: "black",
+    padding: 5,
+  },
+
   name: {
     color: color.black,
     fontWeight: "bold",
     fontSize: 18,
   },
-
   status: {
     color: color.note,
     fontSize: 12,

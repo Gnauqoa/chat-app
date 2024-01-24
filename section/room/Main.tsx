@@ -27,7 +27,7 @@ const Main = () => {
   const scrollViewRef = useRef<FlatList>(null);
   return (
     <View style={styles.body}>
-      {loading && <ActivityIndicator size="large" color="#0000ff" />}
+      {loading && <ActivityIndicator size="large" />}
       <FlatList
         onScroll={(event) =>
           setContentOffset(event.nativeEvent.contentOffset.y)
