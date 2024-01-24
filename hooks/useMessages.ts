@@ -18,10 +18,10 @@ const useMessages = ({ roomId }: { roomId: string }) => {
   const handleLoadMore = () => {
     if (data.page < data.total_pages) {
       onOpen();
-      getMessagesAPI({ roomId, per_page: 80, page: data.page + 1 })
+      getMessagesAPI({ roomId, per_page: 10, page: data.page + 1 })
         .then((res) => {
           setData((prevState) => ({
-            ...prevState,
+            ...res.data.data,
             items: [...prevState.items, ...res.data.data.items],
           }));
         })
@@ -33,7 +33,7 @@ const useMessages = ({ roomId }: { roomId: string }) => {
   };
   useEffect(() => {
     onOpen();
-    getMessagesAPI({ roomId, per_page: 80 })
+    getMessagesAPI({ roomId, per_page: 10 })
       .then((res) => {
         setData(res.data.data);
       })

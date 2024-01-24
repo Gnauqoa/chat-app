@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { FlatList, ScrollView, StyleSheet, View } from "react-native";
 import useMessages from "../../hooks/useMessages";
 import useAuth from "../../hooks/useAuth";
@@ -10,11 +10,12 @@ const Main = () => {
   const { user } = useAuth();
   const scrollViewRef = useRef<FlatList>(null);
   const { roomId } = useLocalSearchParams();
-  const { data } = useMessages({ roomId: roomId as string });
-  useEffect(() => {
-    // if (data.items.length > 0)
-    // scrollViewRef.current?.scrollToEnd({ animated: true });
-  }, [data.items]);
+  const { data, handleLoadMore: loadMessages } = useMessages({
+    roomId: roomId as string,
+  });
+  const thresouldVal = data.items.slice(-5);
+  const reachIds = thresouldVal.map((val) => val.id);
+
   return (
     <View style={styles.body}>
       <FlatList
@@ -23,6 +24,7 @@ const Main = () => {
         contentContainerStyle={{
           display: "flex",
         }}
+        onEndReached={loadMessages}
         data={data.items}
         keyExtractor={(item) => `message ${item.id}`}
         renderItem={({ item }) =>
