@@ -14,11 +14,7 @@ const ProfileScreen = () => {
     const router = useRouter();
     const [editing,setEditing] = useState(false);
     const [name,setName] = useState('Your name');
-    const [gmail,setGmail] = useState('21521479@gmail.com');
-    const [maSV,setmaSV] = useState('21521479');
-    const [major,setMajor] = useState('Khoa học máy tính');
-    const [nameClass,setNameClass] = useState('KHCL2021.1');
-    const [birth,setBirth] = useState('03/07/2003');
+    const [gmail,setGmail] = useState('ledangquang@gmail.com');
     const handleEditPress = () => {
       setEditing(true);
     };
@@ -82,33 +78,14 @@ const ProfileScreen = () => {
                                         </View>
 
                                     </View>
-
-                                    <Text style={styles.caption}>Chú thích</Text>
                                 </View>
 
                                 <ScrollView>
                                     <View style={styles.wrapInfosContainer}>
                                         <View style={styles.infoContainer}>
                                             <Text style={styles.title}>Gmail</Text>
-                                            <Text style={styles.content}>21521479@gm.uit.edu.vn</Text>
+                                            <Text style={styles.content}>{gmail}</Text>
                                         </View>
-                                        <View style={styles.infoContainer}>
-                                            <Text style={styles.title}>Mã số sinh viên</Text>
-                                            <Text style={styles.content}>21521479</Text>
-                                        </View>
-                                        <View style={styles.infoContainer}>
-                                            <Text style={styles.title}>Khoa</Text>
-                                            <Text style={styles.content}>Khoa học Máy tính</Text>
-                                        </View>
-                                        <View style={styles.infoContainer}>
-                                            <Text style={styles.title}>Lớp</Text>
-                                            <Text style={styles.content}>KHCL2021.1</Text>
-                                        </View>
-                                        <View style={styles.infoContainer}>
-                                            <Text style={styles.title}>Ngày sinh</Text>
-                                            <Text style={styles.content}>03/07/2003</Text>
-                                        </View>
-
                                     </View>
                                 </ScrollView>
                             </View>      
@@ -272,14 +249,14 @@ const styles =StyleSheet.create({
     },
 
     title: {
-        fontSize: 18,
+        fontSize: 24,
         fontWeight: 'bold',
         color: color.heading,
         paddingVertical: 4,
     },
     
     content: {
-        fontSize: 14,
+        fontSize: 20,
     },
     
 
