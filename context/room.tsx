@@ -25,10 +25,11 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<PaginationStateType<Room>>(
     paginationInitialState
   );
-
+    
   const [query, setQuery] = useState<string>("");
   const [error, setError] = useState<string>("");
   const { toggle, onClose, onOpen } = useToggle();
+
   const handleQuery = (query: string) => {
     onOpen();
     setQuery(query);
@@ -41,6 +42,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
       })
       .finally(onClose);
   };
+
   const handleLoadMore = () => {
     onOpen();
     getRoomsAPI({ query, page: data.page + 1, per_page: 100 })

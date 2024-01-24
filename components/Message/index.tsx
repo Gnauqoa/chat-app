@@ -1,47 +1,33 @@
-import { View, Text } from 'react-native'
-import React, { useState } from 'react'
-import { LinearGradient } from 'expo-linear-gradient';
-import styles from './style'
-import color from '../../container/color';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { View, Text } from "react-native";
+import React, { useState } from "react";
+import { LinearGradient } from "expo-linear-gradient";
+import styles from "./style";
+import color from "../../container/color";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Message as MessageType } from "../../types/message";
+import dayjs from "dayjs";
+import useToggle from "../../hooks/useToggle";
 
-interface MessageProps {
-    key: number,
-    content: string,
-    number: number,
-    onDeleteMess: (index: number) => void;
-    onShowTime: (index: number) => void;
-    time: string,
-  }
-
-const Message: React.FC<MessageProps> = (props) => {
-  // const currentTimeString: string = new Date().toLocaleTimeString();
-
-  const [showTime,setShowTime] = useState(false);
-  
-  const [time,setTime] = useState('');
-  const handleShowTime = () => {
-    props.onShowTime(1);
-    console.log(props.time);
-    setShowTime(!showTime)
-  }
-
-  const handleDeleteMess = () => {
-    props.onDeleteMess(1);
-  }
-
+const Message = ({ message, createdAt }: MessageType) => {
+  const { toggle, onToggle } = useToggle(false);
   return (
-    <TouchableOpacity onLongPress={handleDeleteMess} onPress={handleShowTime} style={styles.sendContainer}>
-      <LinearGradient 
-          colors={[color.gradient1,color.gradient2]}
-          start={{x:0.5, y:0.5}}
-          style={styles.wrapMess}
+    <TouchableOpacity onPress={onToggle} style={styles.sendContainer}>
+      <LinearGradient
+        colors={[color.gradient1, color.gradient2]}
+        start={{ x: 0.5, y: 0.5 }}
+        style={styles.wrapMess}
       >
-          <Text style={styles.userMessage}>{props.content}</Text>
+        <Text style={styles.userMessage}>{message}</Text>
       </LinearGradient>
-      {showTime && <Text style={styles.time}>{props.time}</Text>}
-    </TouchableOpacity>     
-  )
-}
+      {toggle && (
+        <Text style={styles.time}>
+          {dayjs(createdAt).isSame(dayjs(), "day")
+            ? dayjs(createdAt).format("mm:ss")
+            : dayjs(createdAt).format("DD MMM YYYY")}
+        </Text>
+      )}
+    </TouchableOpacity>
+  );
+};
 
-export default Message
+export default Message;

@@ -1,43 +1,38 @@
-import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import dayjs from "dayjs";
+import React, { useState } from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { Message } from "../../types/message";
+import useToggle from "../../hooks/useToggle";
 
-interface UserReceivedProps {
-  key: number,
-  content: string,
-  number: number,
-  onShowTime: (index: number) => void;
-  time: string,
-}
+const UserReceived = ({ message, createdAt }: Message) => {
+  const { toggle, onToggle } = useToggle(false);
 
-const UserReceived: React.FC<UserReceivedProps> = (props) => {
-  const [showTime,setShowTime] = useState(false);
-  const handleShowTime = () => {
-    props.onShowTime(1);
-    console.log(props.time);
-    setShowTime(!showTime)
-  }
   return (
     <View style={styles.container}>
       <View style={styles.outerContainer}>
         <View style={styles.avatarContainer}>
-          <Image style={styles.avatar} source={require('../../assets/images/Avatar.png')} />
+          <Image
+            style={styles.avatar}
+            source={require("../../assets/images/Avatar.png")}
+          />
         </View>
         <View style={styles.messageContainer}>
           <Text style={styles.personName}>Person name</Text>
-          <TouchableOpacity onPress={handleShowTime}>
+          <TouchableOpacity onPress={onToggle}>
             <View style={styles.messageBubble}>
-              <Text style={styles.messageText}>Hello</Text>
+              <Text style={styles.messageText}>{message}</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={handleShowTime}>
-            <View style={styles.messageBubble}>
-              <Text style={styles.messageText}>I have the same question for you.</Text>
-            </View>
-          </TouchableOpacity>          
         </View>
       </View>
-      {showTime && <Text style={styles.timestamp}>09:25 AM</Text>}
+      {toggle && (
+        <Text style={styles.timestamp}>
+          {dayjs(createdAt).isSame(dayjs(), "day")
+            ? dayjs(createdAt).format("mm:ss")
+            : dayjs(createdAt).format("DD MMM YYYY")}
+        </Text>
+      )}
     </View>
   );
 };
@@ -48,69 +43,68 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     paddingTop: 10,
     paddingBottom: 10,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     gap: 10,
   },
   outerContainer: {
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
     gap: 12,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   avatarContainer: {
     paddingTop: 16,
     paddingBottom: 4,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-end',
+    justifyContent: "flex-start",
+    alignItems: "flex-end",
     gap: 10,
-    
   },
   avatar: {
     width: 30,
     height: 30,
   },
   messageContainer: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
     gap: 6,
-    maxWidth: '75%',
+    maxWidth: "75%",
   },
   personName: {
     width: 79,
-    textAlign: 'center',
-    color: 'black',
+    textAlign: "center",
+    color: "black",
     fontSize: 10,
-    fontFamily: 'Poppins',
-    fontWeight: '500',
+    // fontFamily: "Poppins",
+    fontWeight: "500",
     lineHeight: 10,
   },
   messageBubble: {
     padding: 10,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: "#F0F0F0",
     borderRadius: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     gap: 10,
   },
   messageText: {
-    textAlign: 'left',
-    color: '#000E08',
+    textAlign: "left",
+    color: "#000E08",
     fontSize: 14,
-    fontFamily: 'Roboto',
-    fontWeight: '400',
+    // fontFamily: "Roboto",
+    fontWeight: "400",
     // lineHeight: 12,
     letterSpacing: 0.12,
   },
   timestamp: {
     width: 54,
-    textAlign: 'center',
-    color: 'rgba(121, 124, 123, 0.50)',
+    textAlign: "center",
+    color: "rgba(121, 124, 123, 0.50)",
     fontSize: 10,
-    fontFamily: 'Poppins',
-    fontWeight: '500',
+    // fontFamily: "Poppins",
+    fontWeight: "500",
     lineHeight: 10,
     marginLeft: 40,
   },
