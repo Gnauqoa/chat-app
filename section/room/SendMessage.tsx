@@ -8,10 +8,14 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import color from "../../container/color";
+import useSendMessage from "../../hooks/useSendMessage";
+import { useLocalSearchParams } from "expo-router";
 
 const SendMessage = () => {
   const [message, setMessage] = useState("");
-  const handleSendMess = () => {};
+  const { sendMessage } = useSendMessage();
+  const { roomId } = useLocalSearchParams();
+
   return (
     <View style={styles.Form}>
       <TouchableOpacity>
@@ -23,11 +27,19 @@ const SendMessage = () => {
           placeholder="Write your message"
           placeholderTextColor={color.note}
           style={styles.input}
-          onChangeText={(text) => setMessage(text)}
+          onChangeText={(text) => {
+            setMessage(text);
+          }}
         />
 
         {message.length > 0 ? (
-          <TouchableOpacity onPress={handleSendMess}>
+          <TouchableOpacity
+            onPress={() => {
+              setMessage("");
+
+              sendMessage({ message, roomId: roomId as string });
+            }}
+          >
             <Image
               style={styles.iconSend}
               source={require("../../assets/images/sendBtn.png")}

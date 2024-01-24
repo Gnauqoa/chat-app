@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     color: "#000E08",
     fontSize: 14,
-    fontFamily: "Roboto",
+    // fontFamily: "Roboto",
     fontWeight: "400",
     // lineHeight: 12,
     letterSpacing: 0.12,
@@ -29,10 +29,9 @@ const styles = StyleSheet.create({
 
 time: {
     width: 54,
-    whiteSpace: "nowrap",
     color: "rgba(121, 124, 123, 0.50)",
     fontSize: 10,
-    fontFamily: "Poppins",
+    // fontFamily: "Poppins",
     fontWeight: "500",
     lineHeight: 10,
 },
