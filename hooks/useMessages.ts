@@ -18,7 +18,7 @@ const useMessages = ({ roomId }: { roomId: string }) => {
   const [error, setError] = useState<string>("");
   const { toggle, onClose, onOpen } = useToggle();
   const handleLoadMore = () => {
-    if (data.page < data.total_pages) {
+    if (data.page < data.total_pages && !toggle) {
       onOpen();
       getMessagesAPI({ roomId, per_page: perPage, page: data.page + 1 })
         .then((res) => {

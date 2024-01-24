@@ -1,11 +1,17 @@
 import { useLocalSearchParams } from "expo-router";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import useMessages from "../../hooks/useMessages";
 import useAuth from "../../hooks/useAuth";
 import Message from "../../components/Message";
 import UserReceived from "../../components/UserReceived";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faArrowCircleDown } from "@fortawesome/free-solid-svg-icons";
+import { AntDesign } from "@expo/vector-icons";
+import { useRef } from "react";
 
 const Main = () => {
   const { user } = useAuth();
@@ -17,12 +23,12 @@ const Main = () => {
   } = useMessages({
     roomId: roomId as string,
   });
-
+  const scrollViewRef = useRef<FlatList>(null);
   return (
     <View style={styles.body}>
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
       <FlatList
-        // ref={scrollViewRef}
+        ref={scrollViewRef}
         inverted
         contentContainerStyle={{
           display: "flex",
@@ -38,14 +44,25 @@ const Main = () => {
           )
         }
       />
-      <View>
-        <FontAwesomeIcon
-          icon={faArrowCircleDown}
-          color="black"
-          size={40}
-          style={styles.scrollDownIcon}
-        />
-      </View>
+      <TouchableOpacity
+        onPress={() =>
+          scrollViewRef.current?.scrollToIndex({ index: 0, animated: true })
+        }
+        style={{
+          backgroundColor: "#000",
+          position: "absolute",
+          justifyContent: "center",
+          alignItems: "center",
+          alignSelf: "flex-end",
+          width: 36,
+          height: 36,
+          borderRadius: 999,
+          bottom: 10,
+          right: 20,
+        }}
+      >
+        <AntDesign name="arrowdown" color="white" size={24} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -89,8 +106,9 @@ const styles = StyleSheet.create({
   scrollDownIcon: {
     position: "absolute",
     alignSelf: "flex-end",
+
     bottom: 10,
-    right: 10,
+    right: 20,
     // backgroundColor: 'red',
   },
 });
