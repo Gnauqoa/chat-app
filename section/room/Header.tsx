@@ -2,53 +2,49 @@ import { useRouter } from "expo-router";
 import { Image, Text, TouchableOpacity, View, StyleSheet } from "react-native";
 import color from "../../container/color";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 const Header = () => {
   const router = useRouter();
   return (
-    <SafeAreaView >
-        <View style={styles.topContainer}>
-          <StatusBar translucent  />
-          <View style={styles.leftTopContainer}>
-            <TouchableOpacity onPress={router.back}>
-              <View style={styles.wrapBackBtn}>
-                <Image
-                  source={require("../../assets/images/backBtn.png")}
-                  style={styles.iconBack}
-                />
-              </View>
-            </TouchableOpacity>
-
-            <View style={styles.userContainer}>
-              <Image
-                source={require("../../assets/images/Avatar.png")}
-                style={styles.avatar}
-              />
-              <View style={styles.nameContainer}>
-                <Text style={styles.name}>Person name 1</Text>
-                <Text style={styles.status}>Active now</Text>
-              </View>
-            </View>
+    <View style={styles.topContainer}>
+      <StatusBar translucent />
+      <View style={styles.leftTopContainer}>
+        <TouchableOpacity onPress={router.back}>
+          <View style={styles.wrapBackBtn}>
+            <Image
+              source={require("../../assets/images/backBtn.png")}
+              style={styles.iconBack}
+            />
           </View>
+        </TouchableOpacity>
 
-          <View style={styles.rightTopContainer}>
-            <TouchableOpacity>
-              <Image
-                style={styles.iconPhone}
-                source={require("../../assets/images/phone.png")}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Image
-                style={styles.iconCamera}
-                source={require("../../assets/images/camera.png")}
-              />
-            </TouchableOpacity>
+        <View style={styles.userContainer}>
+          <Image
+            source={require("../../assets/images/Avatar.png")}
+            style={styles.avatar}
+          />
+          <View style={styles.nameContainer}>
+            <Text style={styles.name}>Person name 1</Text>
+            <Text style={styles.status}>Active now</Text>
           </View>
         </View>
-    </SafeAreaView>
-    
+      </View>
+
+      <View style={styles.rightTopContainer}>
+        <TouchableOpacity>
+          <Image
+            style={styles.iconPhone}
+            source={require("../../assets/images/phone.png")}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Image
+            style={styles.iconCamera}
+            source={require("../../assets/images/camera.png")}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
 
