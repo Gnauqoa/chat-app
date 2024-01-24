@@ -1,13 +1,12 @@
 import { AxiosResponse } from "axios";
-import { PaginationParamsType, PaginationResponseType } from ".";
 import { Message } from "../types/message";
 import axiosForChatApp from "../config/axios";
 
-export const createMessage = async ({
+export const createMessageAPI = async ({
   roomId,
   message,
 }: {
-  roomId: number;
+  roomId: number | string;
   message: string;
 }): Promise<AxiosResponse<Message>> => {
   return axiosForChatApp.post(`/rooms/${roomId}/messages`, { message });
