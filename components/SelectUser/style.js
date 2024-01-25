@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     itemContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 30,
+        paddingHorizontal: 20,
         paddingVertical: 10,
         borderBottomWidth: 0.4,
         borderBottomColor: color.note,
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     userHeading: {
         color: color.black,
         fontWeight: 'bold',
+        maxWidth: 240,
         fontSize: 18
     },
 
