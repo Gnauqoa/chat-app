@@ -83,10 +83,11 @@ const Main = () => {
                     </Text>
                 </TouchableOpacity> */}
         </View>
-
-        <Text style={styles.headingSmall}>
-          Gợi ý:
-        </Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Text style={styles.headingSmall}>
+            Gợi ý:
+            </Text>
+        </TouchableWithoutFeedback>
         <ScrollView>
           <View style={styles.bodyContainer}>
             <FlatList 
@@ -179,7 +180,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: color.heading,
         fontWeight: 'bold',
-        marginBottom: 10
+        marginBottom: 10,
+        // backgroundColor: 'red',
     },
 
     bodyContainer: {
