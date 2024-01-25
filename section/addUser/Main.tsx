@@ -57,25 +57,30 @@ const Main = () => {
                     value={searchQuery}
                     onChangeText={setSearchQuery}
                 />
-                {/* <TouchableOpacity onPress={() => onNewQuery(searchQuery)}>
+                <TouchableOpacity onPress={() => onNewQuery(searchQuery)}>
                     <Text style={styles.txtSearch}>
                     {searchQuery.length > 0 ? "Search" : ""}
                     </Text>
-                </TouchableOpacity> */}
-                </View>
-                <Text style={styles.headingSmall}>
+                </TouchableOpacity>
+        </View>
+        <Text style={styles.headingSmall}>
                     Gợi ý:
-                </Text>
+        </Text>
                 
-                <View style={styles.bodyContainer}>
+        <View style={styles.bodyContainer}>
                     <FlatList 
-                                data={data}
-                                keyExtractor={(item) => item.username}
-                                renderItem={({item}) => (
-                                    <SelectUser username={item.username} studentID={item.studentID} onSelect={handleSelectUser} />
-                                )}
+                        data={data}
+                        keyExtractor={(item) => item.username}
+                        renderItem={({item}) => (
+                            <SelectUser username={item.username} studentID={item.studentID} onSelect={handleSelectUser} />
+                        )}
                     />         
         </View>
+        {count>0 ? (
+            <TouchableOpacity onPress={() => router.push('/screen/ChatBox')} style={styles.outer}> 
+              <Image style={styles.icon} source={require('../../assets/images/nextArrow.png')} />
+            </TouchableOpacity>
+            ) : null}
     </View>
   )
 }
@@ -109,7 +114,7 @@ const styles = StyleSheet.create({
     input: {
         fontSize: 14,
         color: color.white,
-        width: 'auto',
+        width: '70%',
         marginRight: 20,
         marginLeft: 10,
         backgroundColor: color.black,
@@ -130,8 +135,32 @@ const styles = StyleSheet.create({
         backgroundColor: color.white,
         width: '100%',
         height: '100%',
-
         // paddingHorizontal: 20,
+    },
+
+    txtSearch: {
+        color: color.white,
+        fontWeight: "bold",
+        lineHeight: 29,
+    },
+
+    icon: {
+        width: 24,
+        height: 24,
+        resizeMode: 'stretch',
+    },
+
+    outer: {
+        width: 60,
+        height: 60,
+        backgroundColor: color.heading,
+        position: 'absolute',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 40,
+        alignSelf: 'flex-end',
+        bottom: 30,
+        right: 20
     },
 })
 
