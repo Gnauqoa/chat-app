@@ -1,113 +1,117 @@
-import {
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  ImageBackground,
-  StatusBar,
-  Linking,
-  StyleSheet,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-  Keyboard,
-} from "react-native";
-import {
-  FlatList,
-  ScrollView,
-  TextInput,
-  TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
-import React, { useState } from "react";
-
-import { router } from "expo-router";
-import UserItem from "../../components/UserItem";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { FlatList, TextInput } from "react-native-gesture-handler";
+import React, { useContext, useState } from "react";
 import color from "../../container/color";
-import filter from "lodash.filter";
 import SelectUser from "../../components/SelectUser";
-
-const sampleData = [
-  { username: "john.doe@example.com", studentID: "123123" },
-  { username: "jane.smith@example.com", studentID: "121212" },
-  { username: "sam.jones@example.com", studentID: "323232" },
-  { username: "ledangquang@gmail.com", studentID: "21521338" },
-  { username: "nguyenthingocha@gmail.com", studentID: "21520217" },
-  { username: "truonghuutho@gmail.com", studentID: "21521479" },
-  { username: "huynhminhhieu@gmail.com", studentID: "21521479" },
-  // Thêm các mục dữ liệu khác nếu cần
-];
+import useSearchUsers from "../../hooks/useSearchUsers";
+import { User } from "../../types/user";
+import RemoveUser from "../../components/RemoveUser";
+import { RoomContext, RoomContextType } from "../../context/room";
 
 const Main = () => {
-  const [count, setCount] = useState(0);
-  const handleSelectUser = (isSelected: boolean) => {
-    if (isSelected === true) {
-      setCount(count + 1);
-    } else {
-      setCount(count - 1);
-    }
-  };
-  const [data, setData] =
-    useState<{ username: string; studentID: string }[]>(sampleData);
+  const [selectedList, setSelectedList] = useState<User[]>([]);
+  const { handleQuery, data } = useSearchUsers();
+  const { handleCreateRoom } = useContext(RoomContext) as RoomContextType;
   const [searchQuery, setSearchQuery] = useState("");
   const [roomName, setRoomName] = useState("Room 1");
+
   return (
     <View style={styles.body}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={{}}>
         <Text style={styles.heading}>Đặt tên cho cuộc hội thoại</Text>
-      </TouchableWithoutFeedback>
-      <TextInput
-        style={styles.nameEdit}
-        value={roomName}
-        underlineColorAndroid={color.black}
-        onChangeText={(text) => setRoomName(roomName)}
-      />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <TextInput
+            style={styles.nameEdit}
+            value={roomName}
+            underlineColorAndroid={color.black}
+            onChangeText={setRoomName}
+          />
+          <TouchableOpacity
+            onPress={() =>
+              handleCreateRoom({
+                name: roomName,
+                users: selectedList.map((selected) => ({
+                  id: selected.id.toString(),
+                })),
+              })
+            }
+            style={{
+              marginLeft: "auto",
+              padding: 12,
+              backgroundColor: "#000",
+              borderRadius: 12,
+            }}
+          >
+            <Text style={{ color: "#fff" }}>Tạo</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.inputFind}>
-        <Image
-          source={require("../../assets/images/find.png")}
-          style={styles.iconSmall}
-        />
-        <TextInput
-          autoCapitalize="none"
-          placeholder="Search"
-          placeholderTextColor={color.white}
-          style={styles.input}
-          clearButtonMode="always"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
-        <TouchableOpacity
-          onPress={() => console.log("onNewQuery(searchQuery)")}
-        >
-          <Text style={styles.txtSearch}>
-            {searchQuery.length > 0 ? "Search" : ""}
-          </Text>
-        </TouchableOpacity>
-        {/* <TouchableOpacity onPress={() => onNewQuery(searchQuery)}>
-                    <Text style={styles.txtSearch}>
-                    {searchQuery.length > 0 ? "Search" : ""}
-                    </Text>
-                </TouchableOpacity> */}
+        <View style={styles.inputFind}>
+          <Image
+            source={require("../../assets/images/find.png")}
+            style={styles.iconSmall}
+          />
+          <TextInput
+            autoCapitalize="none"
+            placeholder="Search"
+            placeholderTextColor={color.white}
+            style={styles.input}
+            clearButtonMode="always"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          <TouchableOpacity onPress={() => handleQuery(searchQuery)}>
+            <Text style={styles.txtSearch}>Search</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Text style={styles.headingSmall}>Gợi ý:</Text>
-      </TouchableWithoutFeedback>
-      <ScrollView>
-        <View style={styles.bodyContainer}>
+      {!!selectedList.length && (
+        <View style={{ flex: 1 }}>
           <FlatList
-            data={data}
-            keyExtractor={(item) => item.username}
+            data={selectedList}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item }) => (
-              <SelectUser
-                username={item.username}
-                studentID={item.studentID}
-                onSelect={handleSelectUser}
+              <RemoveUser
+                user={item}
+                onRemove={() => {
+                  const index = selectedList.findIndex(
+                    (selected) => selected.id === item.id
+                  );
+                  setSelectedList((prev) => [
+                    ...prev.slice(0, index),
+                    ...prev.slice(index + 1),
+                  ]);
+                }}
               />
             )}
           />
         </View>
-      </ScrollView>
-      {count > 0 ? (
+      )}
+      {!!data.items.length && (
+        <View style={{ flex: 1 }}>
+          <Text style={{ paddingVertical: 12, fontSize: 20 }}>
+            Kết quả tìm kiếm
+          </Text>
+          <FlatList
+            data={data.items.filter(
+              (item) =>
+                selectedList.findIndex(
+                  (selected) => selected.id === item.id
+                ) === -1
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <SelectUser
+                username={item.name}
+                studentID={item.id}
+                onSelect={() => setSelectedList((prev) => [...prev, item])}
+              />
+            )}
+          />
+        </View>
+      )}
+
+      {/* {count > 0 ? (
         <TouchableOpacity
           onPress={() => router.push("/screen/ChatBox")}
           style={styles.outer}
@@ -117,7 +121,7 @@ const Main = () => {
             source={require("../../assets/images/nextArrow.png")}
           />
         </TouchableOpacity>
-      ) : null}
+      ) : null} */}
     </View>
   );
 };
@@ -195,14 +199,10 @@ const styles = StyleSheet.create({
     color: color.heading,
     fontWeight: "bold",
     marginBottom: 10,
-    // backgroundColor: 'red',
   },
 
   bodyContainer: {
     backgroundColor: "white",
-    width: "100%",
-    height: "100%",
-    // paddingHorizontal: 20,
   },
 
   txtSearch: {
