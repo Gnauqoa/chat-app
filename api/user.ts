@@ -3,8 +3,16 @@ import axiosForChatApp from "../config/axios";
 import { DataResponseType } from ".";
 import { User } from "../types/user";
 
-const getUserAPI = async (): Promise<AxiosResponse<DataResponseType<User>>> => {
+export const getUserAPI = async (): Promise<
+  AxiosResponse<DataResponseType<User>>
+> => {
   return axiosForChatApp.get("/users/current");
 };
 
-export default getUserAPI;
+export const updateUserAPI = async ({
+  name,
+}: {
+  name: string;
+}): Promise<AxiosResponse<DataResponseType<User>>> => {
+  return axiosForChatApp.put("/users/current", { name });
+};
