@@ -67,7 +67,6 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
     users: { id: string }[];
   }) => {
     createRoomAPI({ name, users }).then((response) => {
-      console.log(response)
       router.replace(`/${response.data.data.id.toString()}`);
       setData((prev) => ({
         ...prev,
