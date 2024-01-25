@@ -1,46 +1,20 @@
-import {
-  View,
-  Text,
-  Image,
-  SafeAreaView,
-  ImageBackground,
-  StatusBar,
-  Linking,
-  StyleSheet,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
-} from "react-native";
-import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { FlatList, TextInput } from "react-native-gesture-handler";
 import React, { useState } from "react";
-import { router } from "expo-router";
 import color from "../../container/color";
 import SelectUser from "../../components/SelectUser";
-
-const sampleData = [
-  { username: "john.doe@example.com", studentID: "123123" },
-  { username: "jane.smith@example.com", studentID: "121212" },
-  { username: "sam.jones@example.com", studentID: "323232" },
-  { username: "ledangquang@gmail.com", studentID: "21521338" },
-  { username: "nguyenthingocha@gmail.com", studentID: "21520217" },
-  { username: "truonghuutho@gmail.com", studentID: "21521479" },
-  { username: "huynhminhhieu@gmail.com", studentID: "21521479" },
-  // Thêm các mục dữ liệu khác nếu cần
-];
+import useSearchUsers from "../../hooks/useSearchUsers";
+import { User } from "../../types/user";
 
 const Main = () => {
-  const [count, setCount] = useState(0);
-  const handleSelectUser = (isSelected: boolean) => {
-    if (isSelected === true) {
-      setCount(count + 1);
-    } else {
-      setCount(count - 1);
-    }
-  };
-  const [data, setData] =
-    useState<{ username: string; studentID: string }[]>(sampleData);
+  const [selectedList, setSelectedList] = useState<User[]>([]);
+  const { handleQuery, data, handleLoadMore } = useSearchUsers();
   const [searchQuery, setSearchQuery] = useState("");
   const [roomName, setRoomName] = useState("Room 1");
+  const handleSelectUser = (user: User) => {
+    setSelectedList((prev) => [...prev, user]);
+  };
+
   return (
     <View style={styles.body}>
       <Text style={styles.heading}>Đặt tên cho cuộc hội thoại</Text>
@@ -65,32 +39,30 @@ const Main = () => {
           value={searchQuery}
           onChangeText={setSearchQuery}
         />
-        <TouchableOpacity
-          onPress={() => console.log("onNewQuery(searchQuery)")}
-        >
-          <Text style={styles.txtSearch}>
-            {searchQuery.length > 0 ? "Search" : ""}
-          </Text>
+        <TouchableOpacity onPress={() => handleQuery(searchQuery)}>
+          <Text style={styles.txtSearch}>Search</Text>
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.headingSmall}>Gợi ý:</Text>
-      <ScrollView>
-        <View style={styles.bodyContainer}>
-          <FlatList
-            data={data}
-            keyExtractor={(item) => item.username}
-            renderItem={({ item }) => (
-              <SelectUser
-                username={item.username}
-                studentID={item.studentID}
-                onSelect={handleSelectUser}
-              />
-            )}
-          />
-        </View>
-      </ScrollView>
-      {count > 0 ? (
+      <View style={styles.bodyContainer}>
+        <FlatList
+          data={data.items.filter(
+            (item) =>
+              selectedList.findIndex((selected) => selected.id === item.id) ===
+              -1
+          )}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <SelectUser
+              username={item.name}
+              studentID={item.id}
+              onSelect={handleSelectUser}
+            />
+          )}
+        />
+      </View>
+
+      {/* {count > 0 ? (
         <TouchableOpacity
           onPress={() => router.push("/screen/ChatBox")}
           style={styles.outer}
@@ -100,7 +72,7 @@ const Main = () => {
             source={require("../../assets/images/nextArrow.png")}
           />
         </TouchableOpacity>
-      ) : null}
+      ) : null} */}
     </View>
   );
 };
@@ -181,9 +153,6 @@ const styles = StyleSheet.create({
 
   bodyContainer: {
     backgroundColor: "white",
-    width: "100%",
-    height: "100%",
-    // paddingHorizontal: 20,
   },
 
   txtSearch: {

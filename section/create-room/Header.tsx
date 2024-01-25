@@ -2,22 +2,13 @@ import {
   View,
   Text,
   Image,
-  SafeAreaView,
-  ImageBackground,
   StatusBar,
-  Linking,
   StyleSheet,
   TouchableOpacity,
-  KeyboardAvoidingView,
-  Platform,
 } from "react-native";
-import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
-import React, { useState } from "react";
+import React from "react";
 
 import { router } from "expo-router";
-import UserItem from "../../components/UserItem";
-import color from "../../container/color";
-import filter from "lodash.filter";
 
 const Header = () => {
   return (
@@ -41,10 +32,7 @@ const Header = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-
+  container: {},
   header: {
     backgroundColor: "white",
     // position: 'absolute',
