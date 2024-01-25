@@ -3,7 +3,8 @@ import { AxiosError } from "axios";
 import { PaginationStateType, paginationInitialState } from "../api";
 import { Room } from "../types/room";
 import useToggle from "../hooks/useToggle";
-import { getRoomsAPI, updateRoomAPI } from "../api/room";
+import { createRoomAPI, getRoomsAPI, updateRoomAPI } from "../api/room";
+import { useRouter } from "expo-router";
 
 const perPage = 100;
 
@@ -15,6 +16,7 @@ export type RoomContextType = {
   onLoadMore: () => void;
   onUpdate: (roomId: number | string, updateData: { name: string }) => void;
   onReload: () => void;
+  handleCreateRoom: ({}: { name: string; users: { id: string }[] }) => void;
 };
 
 export const RoomContext = createContext<RoomContextType>({
@@ -25,13 +27,14 @@ export const RoomContext = createContext<RoomContextType>({
   onLoadMore: () => {},
   onUpdate: () => {},
   onReload: () => {},
+  handleCreateRoom: () => {},
 });
 
 export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
   const [data, setData] = useState<PaginationStateType<Room>>(
     paginationInitialState
   );
-
+  const router = useRouter();
   const [query, setQuery] = useState<string>("");
   const [error, setError] = useState<string>("");
   const { toggle, onClose, onOpen } = useToggle();
@@ -53,6 +56,22 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
           response.data.data,
           ...prev.items.slice(index + 1),
         ],
+      }));
+    });
+  };
+  const handleCreateRoom = ({
+    name,
+    users,
+  }: {
+    name: string;
+    users: { id: string }[];
+  }) => {
+    createRoomAPI({ name, users }).then((response) => {
+      console.log(response)
+      router.replace(`/${response.data.data.id.toString()}`);
+      setData((prev) => ({
+        ...prev,
+        items: [...prev.items, response.data.data],
       }));
     });
   };
@@ -90,6 +109,7 @@ export const RoomContextProvider = ({ children }: { children: ReactNode }) => {
     <RoomContext.Provider
       value={{
         onReload: handleReload,
+        handleCreateRoom,
         data,
         loading: toggle,
         error,

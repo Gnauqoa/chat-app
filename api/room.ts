@@ -24,7 +24,15 @@ export const getMessagesAPI = async ({
 }): Promise<AxiosResponse<PaginationResponseType<Message>>> => {
   return axiosForChatApp.get(`/rooms/${roomId}/messages`, { params });
 };
-
+export const createRoomAPI = async ({
+  users,
+  name,
+}: {
+  users: { id: string }[];
+  name: string;
+}): Promise<AxiosResponse<DataResponseType<Room>>> => {
+  return axiosForChatApp.post(`/rooms`, { users, name });
+};
 export const updateRoomAPI = async ({
   roomId,
   data,
