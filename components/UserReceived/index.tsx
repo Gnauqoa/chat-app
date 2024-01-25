@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Message } from "../../types/message";
 import useToggle from "../../hooks/useToggle";
 
-const UserReceived = ({ message, createdAt }: Message) => {
+const UserReceived = ({ message, createdAt, user }: Message) => {
   const { toggle, onToggle } = useToggle(false);
 
   return (
@@ -18,7 +18,7 @@ const UserReceived = ({ message, createdAt }: Message) => {
           />
         </View>
         <View style={styles.messageContainer}>
-          <Text style={styles.personName}>Person name</Text>
+          <Text style={styles.personName}>{user.name}</Text>
           <TouchableOpacity onPress={onToggle}>
             <View style={styles.messageBubble}>
               <Text style={styles.messageText}>{message}</Text>
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
   },
   personName: {
     width: 79,
-    textAlign: "center",
     color: "black",
     fontSize: 10,
     // fontFamily: "Poppins",
@@ -99,8 +98,7 @@ const styles = StyleSheet.create({
     letterSpacing: 0.12,
   },
   timestamp: {
-    
-    width: 'auto',
+    width: "auto",
     textAlign: "center",
     color: "rgba(121, 124, 123, 0.50)",
     fontSize: 10,
