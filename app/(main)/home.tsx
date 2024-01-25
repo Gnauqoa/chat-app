@@ -15,6 +15,7 @@ import color from "../../container/color";
 import { FlatList, TextInput } from "react-native-gesture-handler";
 import UserItem from "../../components/UserItem";
 import { RoomContext, RoomContextType } from "../../context/room";
+import { router } from "expo-router";
 
 const HomeScreen = () => {
   const { data, onNewQuery, loading, onReload } = useContext(
@@ -55,7 +56,7 @@ const HomeScreen = () => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push("/createRoom")}>
               <Image
                 source={require("../../assets/images/plusIcon.png")}
                 style={styles.iconLarge}

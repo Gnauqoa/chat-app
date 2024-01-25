@@ -52,7 +52,7 @@ const Main = () => {
         </TouchableWithoutFeedback>
         <TextInput 
         style={styles.nameEdit}
-        // value={roomName}
+        value={roomName}
         underlineColorAndroid={color.black}
         onChangeText={(text) => setRoomName(roomName)}
         />

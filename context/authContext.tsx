@@ -1,12 +1,12 @@
 import React, { ReactNode, createContext, useEffect, useState } from "react";
 import { loginAPI } from "../api/auth";
-import { removeTokens, saveAccessToken, saveTokens } from "../utils/auth";
+import { removeTokens, saveTokens } from "../utils/auth";
 import { Alert } from "react-native";
 import { AxiosError } from "axios";
 import { useRouter } from "expo-router";
 import { User } from "../types/user";
 import useToggle from "../hooks/useToggle";
-import getUserAPI from "../api/user";
+import { getUserAPI, updateUserAPI } from "../api/user";
 
 export type AuthContextType = {
   auth: boolean;
@@ -15,11 +15,13 @@ export type AuthContextType = {
   user: User | null;
   loading: boolean;
   getUser: () => void;
+  updateUser: (name: string) => void;
 };
 
 export const AuthContext = createContext<AuthContextType>({
   auth: false,
   loading: false,
+  updateUser: () => {},
   login: () => {},
   logout: () => {},
   user: null,
@@ -31,7 +33,21 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const { toggle: loading, onClose, onOpen } = useToggle();
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
-
+  const updateUser = (name: string) => {
+    onOpen();
+    updateUserAPI({ name })
+      .then((res) => {
+        if (res.status === 200) {
+          Alert.alert("Success", "Update successfully");
+          setUser(res.data.data);
+        }
+      })
+      .catch((err) => {
+        const error = err as AxiosError;
+        console.log(error.toJSON());
+      })
+      .finally(onClose);
+  };
   const getUser = async () => {
     onOpen();
     getUserAPI()
@@ -81,7 +97,15 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
   return (
     <AuthContext.Provider
-      value={{ loading, getUser, user, auth: isAuth, login, logout }}
+      value={{
+        loading,
+        getUser,
+        updateUser,
+        user,
+        auth: isAuth,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>
