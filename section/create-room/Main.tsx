@@ -10,8 +10,9 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     Platform,
+    Keyboard,
   } from "react-native";
-import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
+import { FlatList, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import React, { useState } from "react";
   
 import { router } from "expo-router";
@@ -46,10 +47,12 @@ const Main = () => {
   const [roomName,setRoomName] = useState("Room 1");
   return (
     <View style={styles.body}>
-        <Text style={styles.heading}>Đặt tên cho cuộc hội thoại</Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Text style={styles.heading}>Đặt tên cho cuộc hội thoại</Text>
+        </TouchableWithoutFeedback>
         <TextInput 
         style={styles.nameEdit}
-        value={roomName}
+        // value={roomName}
         underlineColorAndroid={color.black}
         onChangeText={(text) => setRoomName(roomName)}
         />

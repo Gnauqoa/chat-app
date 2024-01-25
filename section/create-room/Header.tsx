@@ -10,8 +10,9 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     Platform,
+    Keyboard,
   } from "react-native";
-  import { FlatList, ScrollView, TextInput } from "react-native-gesture-handler";
+  import { FlatList, ScrollView, TextInput, TouchableWithoutFeedback } from "react-native-gesture-handler";
   import React, { useState } from "react";
   
   import { router } from "expo-router";
@@ -36,11 +37,13 @@ const Header = () => {
                 />
               </View>
             </TouchableOpacity>
-            <Text style={styles.heading}>Tạo cuộc hội thoại mới</Text>
+            <TouchableWithoutFeedback  onPress={Keyboard.dismiss}>
+                <Text style={styles.heading}>Tạo cuộc hội thoại mới</Text>
+            </TouchableWithoutFeedback>
           </View>
         </View>
       </View>
-  
+
     );
 }
 
