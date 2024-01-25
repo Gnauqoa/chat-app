@@ -11,9 +11,6 @@ import styles from "./style";
 import color from "../../container/color";
 
 const SelectUser = (props) => {
-  // const {number} = props;
-  // const numberText = number<10 ? `0${number}` : number;
-  // const itemBg = number%2===0 ? styles.even : styles.odd;
   const [isSelected, setSelect] = useState(false);
   const handleSelect = (select) => {
     setSelect(!select);

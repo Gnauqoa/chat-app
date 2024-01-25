@@ -5,62 +5,101 @@ import color from "../../container/color";
 import SelectUser from "../../components/SelectUser";
 import useSearchUsers from "../../hooks/useSearchUsers";
 import { User } from "../../types/user";
+import RemoveUser from "../../components/RemoveUser";
 
 const Main = () => {
   const [selectedList, setSelectedList] = useState<User[]>([]);
-  const { handleQuery, data, handleLoadMore } = useSearchUsers();
+  const { handleQuery, data } = useSearchUsers();
   const [searchQuery, setSearchQuery] = useState("");
   const [roomName, setRoomName] = useState("Room 1");
-  const handleSelectUser = (user: User) => {
-    setSelectedList((prev) => [...prev, user]);
-  };
 
   return (
     <View style={styles.body}>
-      <Text style={styles.heading}>Đặt tên cho cuộc hội thoại</Text>
-      <TextInput
-        style={styles.nameEdit}
-        value={roomName}
-        underlineColorAndroid={color.black}
-        onChangeText={setRoomName}
-      />
+      <View style={{}}>
+        <Text style={styles.heading}>Đặt tên cho cuộc hội thoại</Text>
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <TextInput
+            style={styles.nameEdit}
+            value={roomName}
+            underlineColorAndroid={color.black}
+            onChangeText={setRoomName}
+          />
+          <TouchableOpacity
+            style={{
+              marginLeft: "auto",
+              padding: 12,
+              backgroundColor: "#000",
+              borderRadius: 12,
+            }}
+          >
+            <Text style={{ color: "#fff" }}>Tạo</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.inputFind}>
-        <Image
-          source={require("../../assets/images/find.png")}
-          style={styles.iconSmall}
-        />
-        <TextInput
-          autoCapitalize="none"
-          placeholder="Search"
-          placeholderTextColor={color.white}
-          style={styles.input}
-          clearButtonMode="always"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-        />
-        <TouchableOpacity onPress={() => handleQuery(searchQuery)}>
-          <Text style={styles.txtSearch}>Search</Text>
-        </TouchableOpacity>
+        <View style={styles.inputFind}>
+          <Image
+            source={require("../../assets/images/find.png")}
+            style={styles.iconSmall}
+          />
+          <TextInput
+            autoCapitalize="none"
+            placeholder="Search"
+            placeholderTextColor={color.white}
+            style={styles.input}
+            clearButtonMode="always"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+          <TouchableOpacity onPress={() => handleQuery(searchQuery)}>
+            <Text style={styles.txtSearch}>Search</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-
-      <View style={styles.bodyContainer}>
-        <FlatList
-          data={data.items.filter(
-            (item) =>
-              selectedList.findIndex((selected) => selected.id === item.id) ===
-              -1
-          )}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => (
-            <SelectUser
-              username={item.name}
-              studentID={item.id}
-              onSelect={handleSelectUser}
-            />
-          )}
-        />
-      </View>
+      {!!selectedList.length && (
+        <View style={{ flex: 1 }}>
+          <FlatList
+            data={selectedList}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <RemoveUser
+                user={item}
+                onRemove={() => {
+                  const index = selectedList.findIndex(
+                    (selected) => selected.id === item.id
+                  );
+                  setSelectedList((prev) => [
+                    ...prev.slice(0, index),
+                    ...prev.slice(index + 1),
+                  ]);
+                }}
+              />
+            )}
+          />
+        </View>
+      )}
+      {!!data.items.length && (
+        <View style={{ flex: 1 }}>
+          <Text style={{ paddingVertical: 12, fontSize: 20 }}>
+            Kết quả tìm kiếm
+          </Text>
+          <FlatList
+            data={data.items.filter(
+              (item) =>
+                selectedList.findIndex(
+                  (selected) => selected.id === item.id
+                ) === -1
+            )}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <SelectUser
+                username={item.name}
+                studentID={item.id}
+                onSelect={() => setSelectedList((prev) => [...prev, item])}
+              />
+            )}
+          />
+        </View>
+      )}
 
       {/* {count > 0 ? (
         <TouchableOpacity
@@ -79,6 +118,7 @@ const Main = () => {
 
 const styles = StyleSheet.create({
   body: {
+    flex: 1,
     backgroundColor: color.white,
     paddingHorizontal: 20,
   },
