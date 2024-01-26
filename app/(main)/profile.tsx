@@ -104,14 +104,24 @@ const ProfileScreen = () => {
                 </ScrollView>
               </View>
             </View>
-            <View style={styles.logoutContainer}>
+            <View style={styles.bottomContainer}>
               <TouchableOpacity onPress={logout}>
                 <LinearGradient
                   colors={[color.gradient1, color.gradient2]}
                   start={{ x: 0.5, y: 0.5 }}
-                  style={styles.wrapBtn}
+                  style={styles.wrapBtnLogout}
                 >
                   <Text style={styles.logoutBtn}>Log out</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={logout}>
+                <LinearGradient
+                  colors={[color.gradient1, color.gradient2]}
+                  start={{ x: 0.5, y: 0.5 }}
+                  style={styles.wrapBtnChangePwd}
+                >
+                  <Text style={styles.logoutBtn}>Change password</Text>
                 </LinearGradient>
               </TouchableOpacity>
             </View>
@@ -235,9 +245,17 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  wrapBtn: {
+  wrapBtnLogout: {
     alignSelf: "center",
     paddingHorizontal: 60,
+    paddingVertical: 8,
+    borderRadius: 30,
+    marginBottom: 10,
+  },
+
+  wrapBtnChangePwd: {
+    alignSelf: "center",
+    paddingHorizontal: 40,
     paddingVertical: 8,
     borderRadius: 30,
     marginBottom: 10,
@@ -285,8 +303,10 @@ const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
 
-  logoutContainer: {
+  bottomContainer: {
     paddingVertical: 20,
     backgroundColor: color.white,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });
