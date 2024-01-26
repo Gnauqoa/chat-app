@@ -68,6 +68,13 @@ function RootLayoutNav() {
               presentation: "modal",
             }}
           />
+          <Stack.Screen
+            name="createRoom"
+            options={{
+              headerShown: false,
+              presentation: "modal",
+            }}
+          />
         </Stack>
       </ContextProvider>
     </ThemeProvider>

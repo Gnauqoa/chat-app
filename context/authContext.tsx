@@ -79,6 +79,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
             res.data.data.refreshToken
           );
           Alert.alert("Success", "Login successfully");
+          getUser();
           router.push("/(main)/home");
         }
       })
