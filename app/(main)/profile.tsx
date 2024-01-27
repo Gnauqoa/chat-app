@@ -8,6 +8,7 @@ import {
   StatusBar,
   StyleSheet,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
@@ -19,11 +20,120 @@ import { faX } from "@fortawesome/free-solid-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 import useToggle from "../../hooks/useToggle";
+import * as ImagePicker from "expo-image-picker";
+import UploadModal from "../../components/UploadModal";
+const transparent = 'rgba(0,0,0,0.5)';
+
 
 const ProfileScreen = () => {
   const { updateUser, logout, user } = useAuth();
   const { toggle: editing, onOpen, onClose } = useToggle();
   const [name, setName] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [image,setImage] = useState("");
+  const uploadImage = async (mode: string) => {
+    try {
+      let result: ImagePicker.ImagePickerResult;
+      if (mode == "gallery") {
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+        result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [1,1],
+          quality: 1,
+        })
+      } else {
+        await ImagePicker.requestCameraPermissionsAsync();
+        result = await ImagePicker.
+        launchCameraAsync({
+          cameraType: ImagePicker.CameraType.front,
+          allowsEditing: true,
+          aspect: [1,1],
+          quality: 1,
+        });
+      }
+
+      if (!result.canceled) {
+        // save image
+        await saveImage(result.assets[0].uri);
+      }
+    } catch (error) {
+      alert("Error uploading image: " + error);
+      setOpenModal(false);
+    }
+  };
+
+  const removeImage = async () => {
+    try {
+      saveImage("");
+    } catch (error) {
+      alert(error);
+      setOpenModal(false);
+    }
+  }
+
+  const saveImage = async (image: string) => {
+    try {
+      setImage(image);
+      setOpenModal(false);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // function renderModal() {
+  //   return (
+  //     <Modal
+  //       visible={openModal}
+  //       animationType="fade"
+  //       transparent={true}
+  //     >
+  //       <View
+  //         style={{
+  //           flex: 1,
+  //           justifyContent: 'center',
+  //           alignItems: 'center',
+  //           backgroundColor: transparent,
+  //         }}         
+  //       >
+  //         <View style={{
+  //           backgroundColor: 'white', padding:15, width:'90%', borderRadius: 10,
+  //         }} >
+  //           <TouchableOpacity onPress={() => setOpenModal(false)}>
+  //             <FontAwesomeIcon
+  //               icon={faX}
+  //               color="black"
+  //               size={26}
+  //               style={styles.closeIcon}
+  //             />
+  //           </TouchableOpacity>
+
+  //           <Text style={{color: color.black, fontSize: 30, fontWeight: 'bold', alignSelf: 'center'}}>Profile Photo </Text>
+  //           <View style={styles.optionsContainer}>
+  //               <TouchableOpacity onPress={() => uploadImage("camera")}>
+  //                 <View style={styles.wrapOption}>
+  //                   <Image style={styles.icon} source={require("../../assets/images/cameraIcon.png")} />
+  //                   <Text style={styles.textIcon}>Camera</Text>
+  //                 </View>
+  //               </TouchableOpacity>
+  //               <TouchableOpacity onPress={() => uploadImage("gallery")}>
+  //                 <View style={styles.wrapOption}>
+  //                   <Image style={styles.icon} source={require("../../assets/images/gallery.png")} />
+  //                   <Text style={styles.textIcon}>Gallery</Text>
+  //                 </View>
+  //               </TouchableOpacity>
+  //               <TouchableOpacity onPress={() => removeImage()}>
+  //                 <View style={styles.wrapOption}>
+  //                   <Image style={styles.icon} source={require("../../assets/images/delete.png")} />
+  //                   <Text style={styles.textIcon}>Remove</Text>
+  //                 </View>
+  //               </TouchableOpacity>
+  //           </View>
+  //         </View>
+  //       </View>
+  //     </Modal>
+  //   )
+  // }
 
   const handleSavePress = () => {
     onClose();
@@ -45,9 +155,19 @@ const ProfileScreen = () => {
           <View style={styles.body}>
             <View style={styles.whiteRectangle}></View>
             <View style={styles.boxContainer}>
-              <Image
-                style={styles.avatar}
-                source={require("../../assets/images/Avatar.png")}
+              <TouchableOpacity onPress={() => setOpenModal(true)}>
+                <Image
+                  style={styles.avatar}
+                  source={image ? { uri: image } : require("../../assets/images/Avatar.png")}
+                />
+              </TouchableOpacity>
+              {/* Sử dụng component Modal */}
+              <UploadModal
+                visible={openModal}
+                onClose={() => setOpenModal(false)}
+                onUploadCamera={() => uploadImage("camera")}
+                onUploadGallery={() => uploadImage("gallery")}
+                onRemoveImage={removeImage}
               />
               <View>
                 <View style={styles.nameContainer}>
@@ -289,4 +409,34 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     backgroundColor: color.white,
   },
+
+  optionsContainer: {
+    marginTop: 30,
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+
+  wrapOption: {
+    backgroundColor: color.backgroundIcon,
+    width: 'auto',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 20,
+  },
+
+  icon: {
+    width: 30,
+    height: 30,
+    marginBottom: 6,
+  },
+
+  textIcon: {
+    fontSize: 18,
+  },
+
+  closeIcon: {
+    alignSelf: 'flex-end',
+  }
 });
