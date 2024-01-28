@@ -10,9 +10,11 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { RoomContext, RoomContextType } from "../../context/room";
 import * as ImagePicker from "expo-image-picker";
 import UploadModal from "../../components/UploadModal";
+import InfoModal from "../../components/InfoModal";
 const transparent = 'rgba(0,0,0,0.5)';
 
 const Header = () => {
+  const [isManager,setIsManager] = useState(true);
   const [editing, setEditing] = useState(false);
   const [roomName, setRoomName] = useState("Person name 1");
   const router = useRouter();
@@ -20,6 +22,7 @@ const Header = () => {
   const { roomId } = useLocalSearchParams();
   const [image,setImage] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
   const uploadImage = async (mode: string) => {
     try {
       let result: ImagePicker.ImagePickerResult;
@@ -170,7 +173,23 @@ const Header = () => {
             />
           </TouchableOpacity>
         )}
+        {!isManager ? (
+          ""
+        ) : (editing ? ("") : (
+          <TouchableOpacity onPress={() => setOpenInfoModal(true)}>
+            <Image
+              style={styles.iconCamera}
+              source={require("../../assets/images/infoIcon.png")}
+            />
+          </TouchableOpacity>
+        )
+        )}
       </View>
+      {/* Sử dụng component Modal */}
+      <InfoModal
+        visible={openInfoModal}
+        onCloseModal={() => setOpenInfoModal(false)}
+      />
     </View>
   );
 };
@@ -262,13 +281,14 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     resizeMode: "stretch",
-    marginRight: 20,
+    marginLeft: 20,
   },
 
   iconCamera: {
     width: 24,
     height: 24,
     resizeMode: "stretch",
+    marginLeft: 20,
   },
 
   optionsContainer: {
