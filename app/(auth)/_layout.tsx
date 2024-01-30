@@ -12,6 +12,7 @@ export default function AuthLayout() {
         })}
       >
         <Tabs.Screen name="login" options={{ headerShown: false }} />
+        <Tabs.Screen name="config" options={{ headerShown: false }} />
       </Tabs>
     </AuthGuard>
   );
