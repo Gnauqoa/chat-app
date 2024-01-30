@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -6,33 +6,16 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
-  Alert,
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
 import color from "../../container/color";
-import useAuth from "../../hooks/useAuth";
-import { AuthContext } from '../../context/authContext';
+import useConfigIp from "../../hooks/useConfigIp";
 
-interface inputIPProps {
-  // Add any props if needed
-}
-
-const inputIP: React.FC<inputIPProps> = (props) => {
-  const { login } = useAuth();
-  const { auth } = useContext(AuthContext);
-  const [IPaddress, setIPaddress] = useState<string>("");
-  const [checkIPaddress, setCheckIPaddress] = useState(true);
-  const handleLogIn = async (IPaddress: string) => {
-    // login({ email, password });
-    Keyboard.dismiss();
-  };
-
-  const handleForgotPwd = () => {
-    Alert.alert("Forgot Password");
-  };
-
+const ConfigScreen = () => {
+  const { configStatus, error, setIpData } = useConfigIp();
+  const [IPaddress, setIPaddress] = React.useState<string>("");
+  const [port, setPort] = React.useState<string>("3000");
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -51,27 +34,32 @@ const inputIP: React.FC<inputIPProps> = (props) => {
           <View>
             <TextInput
               autoCapitalize="none"
-              onChangeText={(IPaddress) => setIPaddress(IPaddress)}
+              onChangeText={setIPaddress}
               style={styles.input}
+              value={IPaddress}
+            />
+            <TextInput
+              autoCapitalize="none"
+              onChangeText={setPort}
+              style={styles.input}
+              value={port}
             />
             <View style={{ alignItems: "flex-end" }}>
               <Text style={styles.errorText}>
-                {!checkIPaddress ? "Invalid IP address" : ""}
+                {error ? "Invalid IP address" : ""}
               </Text>
             </View>
           </View>
         </View>
 
-        {/* Button */}
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => handleLogIn(IPaddress)}
+          onPress={() => setIpData(IPaddress, port)}
         >
           <View style={styles.button}>
             <Text style={styles.textBtn}>Connect</Text>
           </View>
         </TouchableOpacity>
-
       </View>
     </KeyboardAvoidingView>
   );
@@ -147,7 +135,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-
   smallText: {
     fontSize: 14,
     color: color.note,
@@ -160,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default inputIP;
+export default ConfigScreen;
