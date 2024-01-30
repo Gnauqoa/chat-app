@@ -7,4 +7,5 @@ export default {
   gradient1: '#272C4E',
   gradient2: '#F04A4C',
   underline: '#C6C6C6',
+  backgroundIcon: '#E4EBF4',
 }

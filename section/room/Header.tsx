@@ -1,5 +1,5 @@
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { Image, Text, TouchableOpacity, View, StyleSheet } from "react-native";
+import { Image, Text, TouchableOpacity, View, StyleSheet, Modal } from "react-native";
 import color from "../../container/color";
 import { StatusBar } from "expo-status-bar";
 import { TextInput } from "react-native-gesture-handler";
@@ -8,13 +8,71 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { RoomContext, RoomContextType } from "../../context/room";
+import * as ImagePicker from "expo-image-picker";
+import UploadModal from "../../components/UploadModal";
+import InfoModal from "../../components/InfoModal";
+const transparent = 'rgba(0,0,0,0.5)';
 
 const Header = () => {
+  const [isManager,setIsManager] = useState(true);
   const [editing, setEditing] = useState(false);
   const [roomName, setRoomName] = useState("Person name 1");
   const router = useRouter();
   const { data, onUpdate } = useContext(RoomContext) as RoomContextType;
   const { roomId } = useLocalSearchParams();
+  const [image,setImage] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [openInfoModal, setOpenInfoModal] = useState(false);
+  const uploadImage = async (mode: string) => {
+    try {
+      let result: ImagePicker.ImagePickerResult;
+      if (mode == "gallery") {
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+        result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [1,1],
+          quality: 1,
+        })
+      } else {
+        await ImagePicker.requestCameraPermissionsAsync();
+        result = await ImagePicker.
+        launchCameraAsync({
+          cameraType: ImagePicker.CameraType.front,
+          allowsEditing: true,
+          aspect: [1,1],
+          quality: 1,
+        });
+      }
+
+      if (!result.canceled) {
+        // save image
+        await saveImage(result.assets[0].uri);
+      }
+    } catch (error) {
+      alert("Error uploading image: " + error);
+      setOpenModal(false);
+    }
+  };
+
+  const removeImage = async () => {
+    try {
+      saveImage("");
+    } catch (error) {
+      alert(error);
+      setOpenModal(false);
+    }
+  }
+
+  const saveImage = async (image: string) => {
+    try {
+      setImage(image);
+      setOpenModal(false);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   const index = data.items.findIndex(
     (item) => item.id.toString() === roomId.toString()
   );
@@ -45,9 +103,19 @@ const Header = () => {
         </TouchableOpacity>
 
         <View style={styles.userContainer}>
-          <Image
-            source={require("../../assets/images/Avatar.png")}
-            style={styles.avatar}
+          <TouchableOpacity onPress={() => setOpenModal(true)} >
+            <Image
+              source={image ? { uri: image } : require("../../assets/images/Avatar.png")}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
+          {/* Sử dụng component Modal */}
+          <UploadModal
+                visible={openModal}
+                onClose={() => setOpenModal(false)}
+                onUploadCamera={() => uploadImage("camera")}
+                onUploadGallery={() => uploadImage("gallery")}
+                onRemoveImage={removeImage}
           />
           <View style={styles.nameContainer}>
             {editing ? (
@@ -105,7 +173,23 @@ const Header = () => {
             />
           </TouchableOpacity>
         )}
+        {!isManager ? (
+          ""
+        ) : (editing ? ("") : (
+          <TouchableOpacity onPress={() => setOpenInfoModal(true)}>
+            <Image
+              style={styles.iconCamera}
+              source={require("../../assets/images/infoIcon.png")}
+            />
+          </TouchableOpacity>
+        )
+        )}
       </View>
+      {/* Sử dụng component Modal */}
+      <InfoModal
+        visible={openInfoModal}
+        onCloseModal={() => setOpenInfoModal(false)}
+      />
     </View>
   );
 };
@@ -137,6 +221,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     marginRight: 14,
+    borderRadius: 20,
   },
 
   userContainer: {
@@ -196,12 +281,43 @@ const styles = StyleSheet.create({
     width: 18,
     height: 18,
     resizeMode: "stretch",
-    marginRight: 20,
+    marginLeft: 20,
   },
 
   iconCamera: {
     width: 24,
     height: 24,
     resizeMode: "stretch",
+    marginLeft: 20,
   },
+
+  optionsContainer: {
+    marginTop: 30,
+    marginBottom: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+
+  wrapOption: {
+    backgroundColor: color.backgroundIcon,
+    width: 'auto',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    padding: 20,
+  },
+
+  icon: {
+    width: 30,
+    height: 30,
+    marginBottom: 6,
+  },
+
+  textIcon: {
+    fontSize: 18,
+  },
+
+  closeIcon: {
+    alignSelf: 'flex-end',
+  }
 });
