@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAccessToken, getRefreshToken, saveTokens } from "../utils/auth";
 
-export const serverUrl = "http://192.168.137.245:3000";
+export const serverUrl = "http://192.168.137.32:3000";
 
 const axiosForChatApp = axios.create({
   baseURL: `${serverUrl}/api/v1`,
@@ -11,7 +11,6 @@ const axiosForChatApp = axios.create({
   },
 });
 
-// Request interceptor to attach the access token to each request
 axiosForChatApp.interceptors.request.use(
   async (config) => {
     const accessToken = await getAccessToken();
@@ -25,7 +24,6 @@ axiosForChatApp.interceptors.request.use(
   }
 );
 
-// Response interceptor to handle token refresh and retry failed requests
 axiosForChatApp.interceptors.response.use(
   (response) => response,
   async (error) => {

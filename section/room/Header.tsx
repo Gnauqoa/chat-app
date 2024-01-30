@@ -21,7 +21,7 @@ const Header = () => {
   useEffect(() => {
     if (index === -1) return;
     setRoomName(data.items[index].name);
-  }, [roomId]);
+  }, [roomId, data.items]);
 
   const handleCancelPress = () => {
     setRoomName(data.items[index].name);
