@@ -16,8 +16,8 @@ This is a simple chat app built with Expo and `expo-router`.
   ```bash
   npm start
   ```
-
-3. Follow the instructions in the terminal to open the app on your device or emulator.
+3. Start backend repo here: https://github.com/Gnauqoa/chat-app-server
+4. Follow the instructions in the terminal to open the app on your device or emulator.
 
 ## Usage
 
