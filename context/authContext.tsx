@@ -7,6 +7,7 @@ import { useRouter } from "expo-router";
 import { User } from "../types/user";
 import useToggle from "../hooks/useToggle";
 import { getUserAPI, updateUserAPI } from "../api/user";
+import useConfigIp from "../hooks/useConfigIp";
 
 export type AuthContextType = {
   auth: boolean;
@@ -32,7 +33,9 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const [isAuth, setIsAuth] = useState<boolean>(false);
   const { toggle: loading, onClose, onOpen } = useToggle();
   const [user, setUser] = useState<User | null>(null);
+  const { configStatus } = useConfigIp();
   const router = useRouter();
+
   const updateUser = (name: string) => {
     onOpen();
     updateUserAPI({ name })
@@ -94,8 +97,8 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   useEffect(() => {
-    getUser();
-  }, []);
+    if (!user && configStatus) getUser();
+  }, [configStatus, user]);
   return (
     <AuthContext.Provider
       value={{
